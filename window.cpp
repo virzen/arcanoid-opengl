@@ -47,6 +47,9 @@ void Window::init() {
 		Errors::handle_fatal("Could not initialize GLEW library!\n");
 	}
 
+	//Compile and instantiate the shader
+	shader = new Shader("shader/vshader.vert", nullptr, "shader/fshader.frag");
+
 	//Configure the window
 	Window::configure();
 }
@@ -74,17 +77,8 @@ void Window::show() {
 }
 
 void Window::deinit() {
-	//Delete OpenGL context and the windows
-	glfwDestroyWindow(glWindow);
-
-	//Release GLFW resources
-	glfwTerminate();
-
 	//Delete this window
 	delete this;
-
-	//Clear the instance pointer
-	Window::instance = nullptr;
 }
 
 void Window::resize(GLFWwindow* window, int width, int height) {
@@ -93,7 +87,7 @@ void Window::resize(GLFWwindow* window, int width, int height) {
 }
 
 void Window::handle_key(GLFWwindow* window, int key, int scancode, int action, int mods) {
-
+	//TODO Handle key events
 }
 
 void Window::draw() {
@@ -102,4 +96,18 @@ void Window::draw() {
 
 	//Swap buffers
 	glfwSwapBuffers(glWindow);
+}
+
+Window::~Window() {
+	//Release the shader
+	delete shader;
+
+	//Delete OpenGL context and the windows
+	glfwDestroyWindow(glWindow);
+
+	//Release GLFW resources
+	glfwTerminate();
+
+	//Clear the instance pointer
+	Window::instance = nullptr;
 }

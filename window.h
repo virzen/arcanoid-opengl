@@ -4,6 +4,7 @@
 #define GRAPHICS_OPENGL_PROJECT_SCENE_H
 
 #include <GLFW/glfw3.h>
+#include "shader/shader.h"
 
 /**
  * A singleton class representing the main and only window of the game.
@@ -67,12 +68,15 @@ private:
 	 * An instance of active OpenGL window.
 	 */
 	GLFWwindow* glWindow;
+	Shader* shader;
 
 	/**
 	 * Private no-arg constructor to disallow instantiating
 	 * this class as it should be a singleton.
 	 */
 	Window() = default;
+
+	virtual ~Window();
 
 	/**
 	 * Configures this window.
