@@ -17,8 +17,6 @@ jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
 Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 */
 
-#define GLM_FORCE_RADIANS
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -26,9 +24,6 @@ Place, Fifth Floor, Boston, MA  02110 - 1301  USA
 #include <glm/gtc/matrix_transform.hpp>
 #include <stdlib.h>
 #include <stdio.h>
-#include "constants.h"
-#include "allmodels.h"
-
 
 //Procedura obsługi błędów
 void error_callback(int error, const char* description) {
@@ -38,27 +33,26 @@ void error_callback(int error, const char* description) {
 //Procedura inicjująca
 void initOpenGLProgram() {
 	//************Tutaj umieszczaj kod, który należy wykonać raz, na początku programu************
-
 }
 
 //Procedura rysująca zawartość sceny
 void drawScene(GLFWwindow* window) {
 	//************Tutaj umieszczaj kod rysujący obraz******************l
-	
+
 }
 
-int main(void)
-{
+int main() {
 	GLFWwindow* window; //Wskaźnik na obiekt reprezentujący okno
 
 	glfwSetErrorCallback(error_callback);//Zarejestruj procedurę obsługi błędów
 
 	if (!glfwInit()) { //Zainicjuj bibliotekę GLFW
 		fprintf(stderr, "Nie można zainicjować GLFW.\n");
-		exit(EXIT_FAILURE); 
+		exit(EXIT_FAILURE);
 	}
 
-	window = glfwCreateWindow(500, 500, "OpenGL", NULL, NULL);  //Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL. 
+	window = glfwCreateWindow(500, 500, "OpenGL", nullptr,
+	                          nullptr);  //Utwórz okno 500x500 o tytule "OpenGL" i kontekst OpenGL.
 
 	if (!window) //Jeżeli okna nie udało się utworzyć, to zamknij program
 	{
@@ -66,11 +60,12 @@ int main(void)
 		exit(EXIT_FAILURE);
 	}
 
-	glfwMakeContextCurrent(window); //Od tego momentu kontekst okna staje się aktywny i polecenia OpenGL będą dotyczyć właśnie jego.
+	glfwMakeContextCurrent(
+			window); //Od tego momentu kontekst okna staje się aktywny i polecenia OpenGL będą dotyczyć właśnie jego.
 	glfwSwapInterval(1); //Czekaj na 1 powrót plamki przed pokazaniem ukrytego bufora
 
 	GLenum err;
-	if ((err=glewInit()) != GLEW_OK) { //Zainicjuj bibliotekę GLEW		
+	if ((err = glewInit()) != GLEW_OK) { //Zainicjuj bibliotekę GLEW
 		fprintf(stderr, "Nie można zainicjować GLEW: %s\n", glewGetErrorString(err));
 		exit(EXIT_FAILURE);
 	}
@@ -79,7 +74,7 @@ int main(void)
 
 	//Główna pętla
 	while (!glfwWindowShouldClose(window)) //Tak długo jak okno nie powinno zostać zamknięte
-	{		
+	{
 		drawScene(window); //Wykonaj procedurę rysującą
 		glfwPollEvents(); //Wykonaj procedury callback w zalezności od zdarzeń jakie zaszły.
 	}
