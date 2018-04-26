@@ -6,11 +6,19 @@
 #include <cstdlib>
 #include <cstdio>
 
-#include "scene.h"
+#include "window.h"
 #include "errors.h"
 
 int main() {
-	auto* scene = new Scene();
-	scene->run();
-	delete scene;
+	//Get window's instance
+	Window* window = Window::get();
+
+	//Initialize the window
+	window->init();
+
+	//Show the window
+	window->show();
+
+	//Deconstruct the window
+	window->deinit();
 }
