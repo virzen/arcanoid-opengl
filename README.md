@@ -1,4 +1,4 @@
-# OpenGL Graphics University Project
+# Arcanoid in OpenGL
 
 To run, use:
 ```shell
