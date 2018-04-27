@@ -1,4 +1,4 @@
-# Arcanoid in OpenGL
+# OpenGL Arcanoid
 
 To run, use:
 ```shell
