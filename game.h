@@ -1,26 +1,29 @@
 // Created by dopieralad on 2018/04/26.
 
-#ifndef GRAPHICS_OPENGL_PROJECT_SCENE_H
-#define GRAPHICS_OPENGL_PROJECT_SCENE_H
+#ifndef OPENGL_ARCANOID_GAME_H
+#define OPENGL_ARCANOID_GAME_H
 
 #include <GLFW/glfw3.h>
 #include "shader/shader.h"
+#include "models/model.h"
+#include "constants.h"
+#include "models/paddle/paddle.h"
 
 /**
- * A singleton class representing the main and only window of the game.
+ * A singleton class representing the game instance.
  */
-class Window {
+class Game {
 
 public:
 	/**
-	 * Gets the one and only one instance of a Window.
+	 * Gets the one and only one instance of the game.
 	 *
-	 * @return  A Window's instance.
+	 * @return  A game's instance.
 	 */
-	static Window* get();
+	static Game* get();
 
 	/**
-	 * Initializes the window.
+	 * Initializes the game.
 	 */
 	void init();
 
@@ -28,10 +31,10 @@ public:
 	 * Shows the window and its contents.
 	 * This method is synchronous and will end only if the window is closed.
 	 */
-	void show();
+	void run();
 
 	/**
-	 * Releases all resources allocated by this window, including Window's instance.
+	 * Releases all resources allocated for this game.
 	 *
 	 * NOTE: Be careful as this method will also delete the object,
 	 * so further references to this object will cause failure.
@@ -40,9 +43,9 @@ public:
 
 private:
 	/**
-	 * This static field stores the only Window instance.
+	 * This static field stores the only game's instance.
 	 */
-	static Window* instance;
+	static Game* instance;
 
 	/**
 	 * This method handles window resize events.
@@ -68,26 +71,71 @@ private:
 	 * An instance of active OpenGL window.
 	 */
 	GLFWwindow* glWindow;
+	/**
+	 * Aspect of window's dimensions.
+	 */
+	float windowAspect;
+	/**
+	 * Game's shader.
+	 * Currently only one shader is supported.
+	 */
 	Shader* shader;
+	/**
+	 * Time taken to draw last game's frame.
+	 */
+	double time;
+	/**
+	 * A perspective matrix.
+	 */
+	glm::mat4 perspectiveMatrix;
+	/**
+	 * Camera's position in Eulerian coordinate system.
+	 */
+	glm::vec3 cameraPosition;
+	/**
+	 * A matrix representing camera's position and rotation.
+	 */
+	glm::mat4 viewMatrix;
+	/**
+	 * An Arkanoid paddle model.
+	 */
+	Paddle* paddle;
 
 	/**
 	 * Private no-arg constructor to disallow instantiating
 	 * this class as it should be a singleton.
 	 */
-	Window() = default;
-
-	virtual ~Window();
+	Game() = default;
 
 	/**
-	 * Configures this window.
+	 * Deconstructor that releases all game's resources.
 	 */
-	void configure();
+	virtual ~Game();
 
 	/**
-	 * Draws this window's contents.
+	 * Resets iteration timer.
+	 *
+	 * Stores time taken to draw last frame in the 'time' variable.
+	 */
+	void resetTimer();
+
+	/**
+	 * Draws screen contents.
 	 */
 	void draw();
+
+	/**
+	 * Draws given model on the screen.
+	 *
+	 * @param model A model to draw.
+	 */
+	void drawModel(Model* model);
+
+	/**
+	 * Recalculates positions of game's models.
+	 */
+	void recalculate();
 };
 
 
-#endif //GRAPHICS_OPENGL_PROJECT_SCENE_H
+#endif //OPENGL_ARCANOID_GAME_H

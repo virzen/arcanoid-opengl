@@ -6,19 +6,26 @@
 #include <cstdlib>
 #include <cstdio>
 
-#include "window.h"
+#include "game.h"
 #include "errors.h"
 
-int main() {
-	//Get window's instance
-	Window* window = Window::get();
+/**
+ * Runs the Arkanoid application.
+ *
+ * @param argc Number of arguments passed.
+ * @param argv An array of arguments.
+ * @return Application's exit code.
+ */
+int main(int argc, char* argv[]) {
+	//Get game's instance
+	Game* game = Game::get();
 
-	//Initialize the window
-	window->init();
+	//Initialize the game
+	game->init();
 
-	//Show the window
-	window->show();
+	//Start the game
+	game->run();
 
-	//Deconstruct the window
-	window->deinit();
+	//Deinitialize the game
+	game->deinit();
 }

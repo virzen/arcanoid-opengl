@@ -1,7 +1,7 @@
 //Created by dopieralad on 2018/04/26.
 
-#ifndef GRAPHICS_OPENGL_PROJECT_SHADER_H
-#define GRAPHICS_OPENGL_PROJECT_SHADER_H
+#ifndef OPENGL_ARCANOID_SHADER_H
+#define OPENGL_ARCANOID_SHADER_H
 
 
 #include <GL/glew.h>
@@ -23,7 +23,7 @@ public:
 	 * @param name A name of a uniform variable.
 	 * @return A number of a slot of a uniform variable with given name.
 	 */
-	GLint getUniformLocation(const char* name);
+	GLuint getUniformLocation(const char* name);
 
 	/**
 	 * Gets number of a slot bound to an attribute.
@@ -31,7 +31,7 @@ public:
 	 * @param name A name of an attribute.
 	 * @return A number of a slot of an attribute with given name.
 	 */
-	GLint getAttribLocation(const char* name);
+	GLuint getAttribLocation(const char* name);
 
 	~Shader();
 
@@ -72,4 +72,4 @@ private:
 };
 
 
-#endif //GRAPHICS_OPENGL_PROJECT_SHADER_H
+#endif //OPENGL_ARCANOID_SHADER_H

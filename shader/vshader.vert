@@ -11,11 +11,10 @@ in vec4 normal;
 out vec4 c;
 
 void main(void) {
-    float d = 1 - (distance(V*M*vertex, vec4(0,0,0,1)) - 3.3)/1.7;
 
     vec4 mod_vertex = vertex;
-	gl_Position=P*V*M*mod_vertex;
-	c = vec4(color.xyz*d, color.a);
+	gl_Position = P * V * M * mod_vertex;
+	c = color;
 }
 
 

@@ -52,11 +52,11 @@ void Shader::use() {
 	glUseProgram(shaderProgram);
 }
 
-GLint Shader::getUniformLocation(const char* variableName) {
+GLuint Shader::getUniformLocation(const char* variableName) {
 	return glGetUniformLocation(shaderProgram, variableName);
 }
 
-GLint Shader::getAttribLocation(const char* variableName) {
+GLuint Shader::getAttribLocation(const char* variableName) {
 	return glGetAttribLocation(shaderProgram, variableName);
 }
 
