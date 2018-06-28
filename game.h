@@ -8,6 +8,7 @@
 #include "models/model.h"
 #include "constants.h"
 #include "models/paddle/paddle.h"
+#include "models/brick/brick.h"
 
 /**
  * A singleton class representing the game instance.
@@ -100,6 +101,8 @@ private:
 	 * An Arkanoid paddle model.
 	 */
 	Paddle* paddle;
+
+	Brick* brick;
 
 	/**
 	 * Private no-arg constructor to disallow instantiating

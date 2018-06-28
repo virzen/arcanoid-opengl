@@ -11,6 +11,7 @@
 #include "errors.h"
 #include "constants.h"
 #include "models/paddle/paddle.h"
+#include "models/brick/brick.h"
 
 static float padX = 0;
 static float padZ = 0;
@@ -82,6 +83,7 @@ void Game::init() {
 
 	//Create models
 	paddle = new Paddle();
+	brick = new Brick();
 }
 
 void Game::run() {
@@ -185,6 +187,7 @@ void Game::draw() {
 
 	//Draw paddle
 	drawModel(paddle);
+	drawModel(brick);
 
 	//Swap buffers
 	glfwSwapBuffers(glWindow);
