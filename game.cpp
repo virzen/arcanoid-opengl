@@ -85,6 +85,21 @@ void Game::init() {
 
 	//Create models
 	paddle = new Paddle();
+	
+	// Instantiate and place the bricks
+	for(int i = 0; i < BRICKS_COUNT; i++) {
+		bricks.push_back(new Brick());
+	}
+
+	glm::mat4 brickMatrix;
+	int brickOffset;
+	for(int i = 0; i < bricks.size(); i++) {
+		brickOffset = i - 2;
+
+		brickMatrix = bricks.at(i)->getMatrix();
+		brickMatrix = glm::translate(brickMatrix, glm::vec3(brickOffset * 4.0f, 4.0f, 0.0f));
+		bricks.at(i)->setMatrix(brickMatrix);
+	}
 }
 
 void Game::run() {
@@ -188,8 +203,8 @@ void Game::draw() {
 
 	//Draw paddle
 	drawModel(paddle);
-	for (int i = 0; i < BRICKS_COUNT; i++) {
-		drawModel(&bricks[i]);
+	for (Brick* brick : bricks) {
+		drawModel(brick);
 	}
 
 	//Swap buffers

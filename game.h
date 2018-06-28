@@ -9,6 +9,7 @@
 #include "constants.h"
 #include "models/paddle/paddle.h"
 #include "models/brick/brick.h"
+#include <vector>
 
 /**
  * A singleton class representing the game instance.
@@ -102,7 +103,7 @@ private:
 	 */
 	Paddle* paddle;
 
-	Brick bricks[5];
+	std::vector<Brick*> bricks;
 
 	/**
 	 * Private no-arg constructor to disallow instantiating
