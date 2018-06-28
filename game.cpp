@@ -17,6 +17,8 @@ static float padX = 0;
 static float padZ = 0;
 static float cameraRotation = 0;
 
+static const int BRICKS_COUNT = 5;
+
 Game* Game::instance = nullptr;
 
 Game* Game::get() {
@@ -83,7 +85,6 @@ void Game::init() {
 
 	//Create models
 	paddle = new Paddle();
-	brick = new Brick();
 }
 
 void Game::run() {
@@ -187,7 +188,9 @@ void Game::draw() {
 
 	//Draw paddle
 	drawModel(paddle);
-	drawModel(brick);
+	for (int i = 0; i < BRICKS_COUNT; i++) {
+		drawModel(&bricks[i]);
+	}
 
 	//Swap buffers
 	glfwSwapBuffers(glWindow);

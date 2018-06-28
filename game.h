@@ -102,7 +102,7 @@ private:
 	 */
 	Paddle* paddle;
 
-	Brick* brick;
+	Brick bricks[5];
 
 	/**
 	 * Private no-arg constructor to disallow instantiating
