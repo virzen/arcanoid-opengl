@@ -198,6 +198,11 @@ void Game::recalculate() {
 	glm::mat4 padMatrix = paddle->getMatrix();
 	padMatrix = glm::translate(padMatrix, glm::vec3(PAD_SPEED * time * padX, 0.0f, PAD_SPEED * time * padZ));
 	paddle->setMatrix(padMatrix);
+
+	// Recalculate ball position
+	glm::mat4 ballMatrix = ball->getMatrix();
+	ballMatrix = glm::translate(ballMatrix, glm::vec3(BALL_SPEED * time, BALL_SPEED * time, 0.0f));
+	ball->setMatrix(ballMatrix);
 }
 
 void Game::draw() {
