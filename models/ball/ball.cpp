@@ -5,174 +5,35 @@
 #include <cstdio>
 #include "../../utils/obj_loader.h"
 
-unsigned int Ball::VERTEX_COUNT = 36;
-
-static float VERTICES_DATA[] = {
-		1.0f, 0.0f, -1.0f, 1.0f,
-		-1.0f, 1.15f, -1.0f, 1.0f,
-		-1.0f, 0.0f, -1.0f, 1.0f,
-
-		1.0f, 0.0f, -1.0f, 1.0f,
-		1.0f, 1.15f, -1.0f, 1.0f,
-		-1.0f, 1.15f, -1.0f, 1.0f,
-
-		-1.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 1.15f, 1.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 1.0f,
-
-		-1.0f, 0.0f, 1.0f, 1.0f,
-		-1.0f, 1.15f, 1.0f, 1.0f,
-		1.0f, 1.15f, 1.0f, 1.0f,
-
-		1.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 1.15f, -1.0f, 1.0f,
-		1.0f, 0.0f, -1.0f, 1.0f,
-
-		1.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 1.15f, 1.0f, 1.0f,
-		1.0f, 1.15f, -1.0f, 1.0f,
-
-		-1.0f, 0.0f, -1.0f, 1.0f,
-		-1.0f, 1.15f, 1.0f, 1.0f,
-		-1.0f, 0.0f, 1.0f, 1.0f,
-
-		-1.0f, 0.0f, -1.0f, 1.0f,
-		-1.0f, 1.15f, -1.0f, 1.0f,
-		-1.0f, 1.15f, 1.0f, 1.0f,
-
-		-1.0f, 0.0f, -1.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, -1.0f, 1.0f,
-
-		-1.0f, 0.0f, -1.0f, 1.0f,
-		-1.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, 0.0f, 1.0f, 1.0f,
-
-		-1.0f, 1.15f, 1.0f, 1.0f,
-		1.0f, 1.15f, -1.0f, 1.0f,
-		1.0f, 1.15f, 1.0f, 1.0f,
-
-		-1.0f, 1.15f, 1.0f, 1.0f,
-		-1.0f, 1.15f, -1.0f, 1.0f,
-		1.0f, 1.15f, -1.0f, 1.0f,
-
-};
-float* Ball::VERTICES = VERTICES_DATA;
-
-static float COLORS_DATA[] = {
-		1.0f, 0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f, 1.0f,
-
-		1.0f, 0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f, 1.0f,
-		1.0f, 0.0f, 0.0f, 1.0f,
-
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-
-		0.0f, 0.0f, 1.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f,
-
-		0.0f, 0.0f, 1.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f,
-
-		1.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, 1.0f,
-
-		1.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f, 0.0f, 1.0f,
-
-		0.0f, 1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f, 1.0f,
-
-		0.0f, 1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f, 1.0f, 1.0f,
-
-		1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f, 1.0f,
-
-		1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f, 1.0f,
-};
-float* Ball::COLORS = COLORS_DATA;
-
-static float NORMALS_DATA[] = {
-		0.0f, 0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 0.0f,
-
-		0.0f, 0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 0.0f,
-
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-
-		1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f, 0.0f,
-
-		1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 0.0f, 0.0f, 0.0f,
-
-		-1.0f, 0.0f, 0.0f, 0.0f,
-		-1.0f, 0.0f, 0.0f, 0.0f,
-		-1.0f, 0.0f, 0.0f, 0.0f,
-
-		-1.0f, 0.0f, 0.0f, 0.0f,
-		-1.0f, 0.0f, 0.0f, 0.0f,
-		-1.0f, 0.0f, 0.0f, 0.0f,
-
-		0.0f, -1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f, 0.0f,
-
-		0.0f, -1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f, 0.0f,
-		0.0f, -1.0f, 0.0f, 0.0f,
-
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-};
-float* Ball::NORMALS = NORMALS_DATA;
+unsigned int Ball::VERTEX_COUNT;
+float* Ball::VERTICES;
+float* Ball::COLORS;
+float* Ball::NORMALS;
 
 Ball::Ball() {
 	matrix = glm::mat4(1.0f);
 
-	std::vector< glm::vec3 > vertices;
-	std::vector< glm::vec2 > uvs;
-	std::vector< glm::vec3 > normals; // Won't be used at the moment.
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec2> uvs;
+	std::vector<glm::vec3> normals; // Won't be used at the moment.
 
 	loadOBJ("./models/ball/ball.obj", vertices, uvs, normals);
 
-	printf("Vertices: %ld\n", vertices.size());
-	printf("UVs: %ld\n", uvs.size());
-	printf("Normals: %ld\n", normals.size());
+	VERTEX_COUNT = static_cast<unsigned int>(vertices.size());
+	VERTICES = (float*) malloc(sizeof(float) * VERTEX_COUNT * 4);
+	COLORS = (float*) malloc(sizeof(float) * VERTEX_COUNT * 4);
+	NORMALS = (float*) malloc(sizeof(float) * VERTEX_COUNT * 4);
+
+	for (int i = 0; i < VERTEX_COUNT; i += 4) {
+		VERTICES[i] = vertices[i].x;
+		VERTICES[i + 1] = vertices[i].y;
+		VERTICES[i + 2] = vertices[i].z;
+		VERTICES[i + 3] = 1.0f;
+		COLORS[i] = 0;
+		COLORS[i + 1] = (float) i / VERTEX_COUNT;
+		COLORS[i + 2] = (float) i / VERTEX_COUNT;
+		COLORS[i + 3] = 1.0f;
+	}
 }
 
 unsigned int Ball::getVertexCount() const {
