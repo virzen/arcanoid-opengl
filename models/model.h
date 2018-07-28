@@ -6,6 +6,7 @@
 
 #include <glm/detail/type_mat.hpp>
 #include <glm/detail/type_mat4x4.hpp>
+#include "boundingBox/boundingBox.h"
 
 /**
  * This is an abstract class representing a 3D model.
@@ -17,11 +18,13 @@
 class Model {
 
 public:
+	Model();
+
 	/**
-	 * Gets number of vertices forming this model.
-	 *
-	 * @return A positive number of vertices.
-	 */
+		 * Gets number of vertices forming this model.
+		 *
+		 * @return A positive number of vertices.
+		 */
 	virtual unsigned int getVertexCount() const = 0;
 
 	/**
@@ -59,11 +62,20 @@ public:
 	 */
 	void setMatrix(const glm::mat4 &matrix);
 
+	glm::vec4 getCenter();
+
+	BoundingBox* getBoundingBox();
+
 protected:
 	/**
 	 * A 4x4 matrix representing this model's position.
 	 */
 	glm::mat4 matrix;
+
+private:
+	BoundingBox* initialBoundingBox;
+
+	void computeInitialBoundingBox();
 };
 
 

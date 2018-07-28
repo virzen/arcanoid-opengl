@@ -13,12 +13,17 @@
 #include "models/paddle/paddle.h"
 #include "models/brick/brick.h"
 #include "models/ball/ball.h"
+#include "utils/does_collide.h"
+#include "utils/bounce.h"
+#include <vector>
 
 static float padX = 0;
 static float padZ = 0;
 static float cameraRotation = 0;
 
 static const int BRICKS_COUNT = 5;
+
+static glm::vec2 ballCoordsModifiers = glm::vec2(1.0f);
 
 Game* Game::instance = nullptr;
 
@@ -90,13 +95,13 @@ void Game::init() {
 	ball = new Ball();
 
 	// Instantiate and place the bricks
-	for(int i = 0; i < BRICKS_COUNT; i++) {
+	for (int i = 0; i < BRICKS_COUNT; i++) {
 		bricks.push_back(new Brick());
 	}
 
 	glm::mat4 brickMatrix;
 	int brickOffset;
-	for(int i = 0; i < bricks.size(); i++) {
+	for (int i = 0; i < bricks.size(); i++) {
 		brickOffset = i - 2;
 
 		brickMatrix = bricks.at(i)->getMatrix();
@@ -177,7 +182,7 @@ void Game::resetTimer() {
 	glfwSetTime(0);
 
 	//Print out FPS
-	printf("\rFPS: %f", 1 / time);
+	//printf("\rFPS: %f", 1 / time);
 }
 
 void Game::recalculate() {
@@ -201,7 +206,24 @@ void Game::recalculate() {
 
 	// Recalculate ball position
 	glm::mat4 ballMatrix = ball->getMatrix();
-	ballMatrix = glm::translate(ballMatrix, glm::vec3(BALL_SPEED * time, BALL_SPEED * time, 0.0f));
+	std::vector<Model*> hitObjects;
+
+	for (Brick* brick : bricks) {
+		if (doesCollide(ball, brick)) {
+			printf("Collides with brick!\n");
+			hitObjects.push_back(brick);
+		}
+	}
+	if (doesCollide(ball, paddle)) {
+		printf("Collides with paddle!\n");
+		hitObjects.push_back(paddle);
+	}
+
+	for (Model* hitObject : hitObjects) {
+		bounce(ball, hitObject, &ballCoordsModifiers);
+	}
+
+	ballMatrix = glm::translate(ballMatrix, glm::vec3(BALL_SPEED * time * ballCoordsModifiers.x, BALL_SPEED * time * ballCoordsModifiers.y, 0.0f));
 	ball->setMatrix(ballMatrix);
 }
 

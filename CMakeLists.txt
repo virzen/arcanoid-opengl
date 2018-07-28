@@ -75,7 +75,7 @@ SET(SOURCE_FILES
 		models/paddle/paddle.cpp
 		models/brick/brick.cpp
 		models/ball/ball.cpp
-		shader/shader.cpp utils/obj_loader.cpp utils/obj_loader.h)
+		shader/shader.cpp utils/obj_loader.cpp utils/obj_loader.h utils/does_collide.h utils/does_collide.cpp utils/bounce.cpp utils/bounce.h models/boundingBox/boundingBox.h models/boundingBox/boundingBox.cpp)
 
 ADD_EXECUTABLE(opengl-arcanoid
 		${HEADER_FILES}

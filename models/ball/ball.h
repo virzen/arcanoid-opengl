@@ -3,6 +3,7 @@
 
 
 #include "../model.h"
+#include "../boundingBox/boundingBox.h"
 
 /**
  * This is a class representing an Arkanoid paddle.

@@ -1,2 +1,3 @@
 #!/bin/bash
-clear && make && ./main_file
+clear
+make && ./main_file

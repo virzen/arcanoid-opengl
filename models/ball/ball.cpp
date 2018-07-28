@@ -13,7 +13,7 @@ float* Ball::NORMALS;
 
 Ball::Ball() {
 	matrix = glm::mat4(1.0f);
-	matrix = glm::translate(matrix, glm::vec3(0.0f, 0.0f, 0.0f));
+	matrix = glm::translate(matrix, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
