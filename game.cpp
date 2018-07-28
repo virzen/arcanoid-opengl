@@ -82,7 +82,7 @@ void Game::init() {
 	glfwSetKeyCallback(glWindow, Game::handle_key);
 
 	//Set camera position
-	cameraPosition = glm::vec3(0.0f, 5.0f, -20.0f);
+	cameraPosition = glm::vec3(0.0f, 5.0f, 20.0f);
 
 	//Create models
 	paddle = new Paddle();
@@ -142,13 +142,13 @@ void Game::resize(GLFWwindow* window, int width, int height) {
 void Game::handle_key(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (action == GLFW_PRESS) {
 		if (key == GLFW_KEY_LEFT) {
-			padX = 1;
-		} else if (key == GLFW_KEY_RIGHT) {
 			padX = -1;
+		} else if (key == GLFW_KEY_RIGHT) {
+			padX = 1;
 		} else if (key == GLFW_KEY_UP) {
-			padZ = 1;
-		} else if (key == GLFW_KEY_DOWN) {
 			padZ = -1;
+		} else if (key == GLFW_KEY_DOWN) {
+			padZ = 1;
 		} else if (key == GLFW_KEY_A) {
 			cameraRotation = -1;
 		} else if (key == GLFW_KEY_D) {
