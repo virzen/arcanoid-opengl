@@ -15,6 +15,7 @@
 #include "models/ball/ball.h"
 #include "utils/does_collide.h"
 #include "utils/bounce.h"
+#include "models/wall/wall.h"
 #include <vector>
 
 static float padX = 0;
@@ -94,6 +95,8 @@ void Game::init() {
 
 	ball = new Ball();
 
+	wall = new Wall();
+
 	// Instantiate and place the bricks
 	for (int i = 0; i < BRICKS_COUNT; i++) {
 		bricks.push_back(new Brick());
@@ -105,7 +108,7 @@ void Game::init() {
 		brickOffset = i - 2;
 
 		brickMatrix = bricks.at(i)->getMatrix();
-		brickMatrix = glm::translate(brickMatrix, glm::vec3(brickOffset * 4.0f, 4.0f, 0.0f));
+		brickMatrix = glm::translate(brickMatrix, glm::vec3(brickOffset * 4.0f, 6.0f, 0.0f));
 		bricks.at(i)->setMatrix(brickMatrix);
 	}
 }
@@ -218,6 +221,10 @@ void Game::recalculate() {
 		printf("Collides with paddle!\n");
 		hitObjects.push_back(paddle);
 	}
+	if (doesCollide(ball, wall)) {
+		printf("Collides with wall!\n");
+		hitObjects.push_back(wall);
+	}
 
 	for (Model* hitObject : hitObjects) {
 		bounce(ball, hitObject, &ballCoordsModifiers);
@@ -237,6 +244,7 @@ void Game::draw() {
 		drawModel(brick);
 	}
 	drawModel(ball);
+	drawModel(wall);
 
 	//Swap buffers
 	glfwSwapBuffers(glWindow);

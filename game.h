@@ -10,6 +10,7 @@
 #include "models/paddle/paddle.h"
 #include "models/brick/brick.h"
 #include "models/ball/ball.h"
+#include "models/wall/wall.h"
 #include <vector>
 
 /**
@@ -109,6 +110,8 @@ private:
 	Ball* ball;
 
 	std::vector<Brick*> bricks;
+
+	Wall* wall;
 
 	/**
 	 * Private no-arg constructor to disallow instantiating
