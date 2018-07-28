@@ -12,6 +12,7 @@
 #include "constants.h"
 #include "models/paddle/paddle.h"
 #include "models/brick/brick.h"
+#include "models/ball/ball.h"
 
 static float padX = 0;
 static float padZ = 0;
@@ -85,7 +86,9 @@ void Game::init() {
 
 	//Create models
 	paddle = new Paddle();
-	
+
+	ball = new Ball();
+
 	// Instantiate and place the bricks
 	for(int i = 0; i < BRICKS_COUNT; i++) {
 		bricks.push_back(new Brick());
@@ -206,6 +209,7 @@ void Game::draw() {
 	for (Brick* brick : bricks) {
 		drawModel(brick);
 	}
+	drawModel(ball);
 
 	//Swap buffers
 	glfwSwapBuffers(glWindow);

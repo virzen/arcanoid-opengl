@@ -9,6 +9,7 @@
 #include "constants.h"
 #include "models/paddle/paddle.h"
 #include "models/brick/brick.h"
+#include "models/ball/ball.h"
 #include <vector>
 
 /**
@@ -102,6 +103,10 @@ private:
 	 * An Arkanoid paddle model.
 	 */
 	Paddle* paddle;
+	/**
+	 * An Arkanoid ball model.
+	 */
+	Ball* ball;
 
 	std::vector<Brick*> bricks;
 

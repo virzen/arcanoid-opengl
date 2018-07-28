@@ -63,7 +63,9 @@ SET(HEADER_FILES
 		game.h
 		models/model.h
 		models/paddle/paddle.h
-		shader/shader.h )
+		models/brick/brick.h
+		models/ball/ball.h
+		shader/shader.h)
 
 SET(SOURCE_FILES
 		main_file.cpp
@@ -71,7 +73,9 @@ SET(SOURCE_FILES
 		game.cpp
 		models/model.cpp
 		models/paddle/paddle.cpp
-		shader/shader.cpp)
+		models/brick/brick.cpp
+		models/ball/ball.cpp
+		shader/shader.cpp utils/obj_loader.cpp utils/obj_loader.h)
 
 ADD_EXECUTABLE(opengl-arcanoid
 		${HEADER_FILES}
