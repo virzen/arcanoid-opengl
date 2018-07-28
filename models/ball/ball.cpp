@@ -3,6 +3,7 @@
 #include "ball.h"
 #include <vector>
 #include <cstdio>
+#include <glm/ext.hpp>
 #include "../../utils/obj_loader.h"
 
 unsigned int Ball::VERTEX_COUNT;
@@ -12,6 +13,8 @@ float* Ball::NORMALS;
 
 Ball::Ball() {
 	matrix = glm::mat4(1.0f);
+	matrix = glm::scale(matrix, glm::vec3(0.5f));
+	matrix = glm::translate(matrix, glm::vec3(0.0f, 4.0f, 0.0f));
 
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
