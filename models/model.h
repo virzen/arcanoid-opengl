@@ -20,33 +20,21 @@ class Model {
 public:
 	Model();
 
-	/**
-		 * Gets number of vertices forming this model.
-		 *
-		 * @return A positive number of vertices.
-		 */
-	virtual unsigned int getVertexCount() const = 0;
+	unsigned int getVertexCount() const;
 
-	/**
-	 * Gets Euler coordinates of all triangles forming this model.
-	 *
-	 * @return An array of triangle coordinates.
-	 */
-	virtual float* getVertices() const = 0;
+	void setVertexCount(unsigned int vertexCount);
 
-	/**
-	 * Gets colors for each triangle forming this model.
-	 *
-	 * @return An array of triangle colors.
-	 */
-	virtual float* getColors() const = 0;
+	float* getVertices() const;
 
-	/**
-	 * Gets normal vectors for each triangle forming this model.
-	 *
-	 * @return An array of normal vectors.
-	 */
-	virtual float* getNormals() const = 0;
+	void setVertices(float* vertices);
+
+	float* getColors() const;
+
+	void setColors(float* colors);
+
+	float* getNormals() const;
+
+	void setNormals(float* normals);
 
 	/**
 	 * Gets model's matrix.
@@ -66,16 +54,37 @@ public:
 
 	BoundingBox* getBoundingBox();
 
-protected:
-	/**
-	 * A 4x4 matrix representing this model's position.
-	 */
-	glm::mat4 matrix;
+	void rotate(float angle, glm::vec3 axis);
+
+	void translate(glm::vec3 axis);
+
+	void loadModel(const char* filename);
 
 private:
 	BoundingBox* initialBoundingBox;
 
 	void computeInitialBoundingBox();
+
+	/**
+	 * A number of vertices shared among all instances of this class.
+	 */
+	unsigned int vertexCount;
+	/**
+	 * Model's triangles shared among all instances of this class.
+	 */
+	float* vertices;
+	/**
+	 * Triangle's colors shared among all instances of this class.
+	 */
+	float* colors;
+	/**
+	 * Triangle's normal vectors shared among all instances of this class.
+	 */
+	float* normals;
+	/**
+	 * A 4x4 matrix representing this model's position.
+	 */
+	glm::mat4 matrix;
 };
 
 
