@@ -63,7 +63,7 @@ SET(HEADER_FILES
 		game.h
 		models/model.h
 		models/paddle/paddle.h
-		models/wall/wall.h
+		models/horizontal-wall/horizontal-wall.h
 		models/brick/brick.h
 		models/ball/ball.h
 		shader/shader.h)
@@ -74,7 +74,7 @@ SET(SOURCE_FILES
 		game.cpp
 		models/model.cpp
 		models/paddle/paddle.cpp
-		models/wall/wall.cpp
+		models/horizontal-wall/horizontal-wall.cpp
 		models/brick/brick.cpp
 		models/ball/ball.cpp
 		shader/shader.cpp utils/obj_loader.cpp utils/obj_loader.h utils/does_collide.h utils/does_collide.cpp utils/bounce.cpp utils/bounce.h models/boundingBox/boundingBox.h models/boundingBox/boundingBox.cpp)

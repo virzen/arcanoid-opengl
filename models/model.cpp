@@ -95,9 +95,9 @@ void Model::loadModel(const char* filename) {
 		vertices[vertexIndex + 1] = objVertices[i].y;
 		vertices[vertexIndex + 2] = objVertices[i].z;
 		vertices[vertexIndex + 3] = 1.0f;
-		colors[vertexIndex] = 0.0f;
-		colors[vertexIndex + 1] = 0.0f;
-		colors[vertexIndex + 2] = 0.0f;
+		colors[vertexIndex] = 1.0f;
+		colors[vertexIndex + 1] = (float) i / getVertexCount();
+		colors[vertexIndex + 2] = (float) i / getVertexCount();
 		colors[vertexIndex + 3] = 1.0f;
 		vertexIndex += 4;
 	}

@@ -10,8 +10,9 @@
 #include "models/paddle/paddle.h"
 #include "models/brick/brick.h"
 #include "models/ball/ball.h"
-#include "models/wall/wall.h"
+#include "models/horizontal-wall/horizontal-wall.h"
 #include <vector>
+
 
 /**
  * A singleton class representing the game instance.
@@ -111,7 +112,7 @@ private:
 
 	std::vector<Brick*> bricks;
 
-	Wall* wall;
+	std::vector<HorizontalWall*> walls;
 
 	/**
 	 * Private no-arg constructor to disallow instantiating

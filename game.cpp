@@ -15,7 +15,7 @@
 #include "models/ball/ball.h"
 #include "utils/does_collide.h"
 #include "utils/bounce.h"
-#include "models/wall/wall.h"
+#include "models/horizontal-wall/horizontal-wall.h"
 #include <vector>
 
 static float padX = 0;
@@ -76,7 +76,7 @@ void Game::init() {
 	shader->use();
 
 	//Clear screen with black
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//Turn on Z-buffer usage
 	glEnable(GL_DEPTH_TEST);
@@ -95,8 +95,6 @@ void Game::init() {
 
 	ball = new Ball();
 
-	wall = new Wall();
-
 	// Instantiate and place the bricks
 	for (int i = 0; i < BRICKS_COUNT; i++) {
 		bricks.push_back(new Brick());
@@ -111,6 +109,12 @@ void Game::init() {
 		brickMatrix = glm::translate(brickMatrix, glm::vec3(brickOffset * 4.0f, 6.0f, 0.0f));
 		bricks.at(i)->setMatrix(brickMatrix);
 	}
+
+	// Instantiate and place walls
+	// Upper wall
+	HorizontalWall* upperWall = new HorizontalWall();
+	upperWall->translate(glm::vec3(0.0f, 9.0f, 0.0f));
+	walls.push_back(upperWall);
 }
 
 void Game::run() {
@@ -221,9 +225,12 @@ void Game::recalculate() {
 		printf("Collides with paddle!\n");
 		hitObjects.push_back(paddle);
 	}
-	if (doesCollide(ball, wall)) {
-		printf("Collides with wall!\n");
-		hitObjects.push_back(wall);
+
+	for (HorizontalWall* wall : walls) {
+		if (doesCollide(ball, wall)) {
+			printf("Collides with wall!\n");
+			hitObjects.push_back(wall);
+		}
 	}
 
 	for (Model* hitObject : hitObjects) {
@@ -240,11 +247,13 @@ void Game::draw() {
 
 	//Draw paddle
 	drawModel(paddle);
+	drawModel(ball);
 	for (Brick* brick : bricks) {
 		drawModel(brick);
 	}
-	drawModel(ball);
-	drawModel(wall);
+	for (HorizontalWall* wall : walls) {
+		drawModel(wall);
+	}
 
 	//Swap buffers
 	glfwSwapBuffers(glWindow);
