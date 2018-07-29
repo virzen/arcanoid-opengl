@@ -89,7 +89,7 @@ void Game::init() {
 	glfwSetKeyCallback(glWindow, Game::handle_key);
 
 	//Set camera position
-	cameraPosition = glm::vec3(0.0f, 5.0f, 20.0f);
+	cameraPosition = glm::vec3(0.0f, 5.0f, 30.0f);
 
 	//Create models
 	paddle = new Paddle();
@@ -211,7 +211,7 @@ void Game::recalculate() {
 	//Compute view matrix
 	viewMatrix = glm::lookAt(
 			cameraPosition,
-			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 10.0f, 0.0f),
 			glm::vec3(0.0f, 1.0f, 0.0f)
 	);
 
