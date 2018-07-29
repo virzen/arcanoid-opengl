@@ -16,6 +16,7 @@
 #include "utils/does_collide.h"
 #include "utils/bounce.h"
 #include "models/horizontal-wall/horizontal-wall.h"
+#include "models/vertical-wall/vertical-wall.h"
 #include <vector>
 
 static float padX = 0;
@@ -112,9 +113,17 @@ void Game::init() {
 
 	// Instantiate and place walls
 	// Upper wall
-	HorizontalWall* upperWall = new HorizontalWall();
-	upperWall->translate(glm::vec3(0.0f, 9.0f, 0.0f));
-	walls.push_back(upperWall);
+	upperWall = new HorizontalWall();
+	upperWall->translate(glm::vec3(0.0f, 19.0f, 0.0f));
+
+	// Side walls
+	VerticalWall* leftWall = new VerticalWall();
+	leftWall->translate(glm::vec3(-11.0f, 10.0f, 0.0f));
+	sideWalls.push_back(leftWall);
+
+	VerticalWall* rightWall = new VerticalWall();
+	rightWall->translate(glm::vec3(11.0f, 10.0f, 0.0f));
+	sideWalls.push_back(rightWall);
 }
 
 void Game::run() {
@@ -226,10 +235,15 @@ void Game::recalculate() {
 		hitObjects.push_back(paddle);
 	}
 
-	for (HorizontalWall* wall : walls) {
-		if (doesCollide(ball, wall)) {
-			printf("Collides with wall!\n");
-			hitObjects.push_back(wall);
+	// walls
+	if (doesCollide(ball, upperWall)) {
+		printf("Collides with upper wall!\n");
+		hitObjects.push_back(upperWall);
+	}
+	for (VerticalWall* sideWall : sideWalls) {
+		if (doesCollide(ball, sideWall)) {
+			printf("Collides with side wall!\n");
+			hitObjects.push_back(sideWall);
 		}
 	}
 
@@ -251,8 +265,9 @@ void Game::draw() {
 	for (Brick* brick : bricks) {
 		drawModel(brick);
 	}
-	for (HorizontalWall* wall : walls) {
-		drawModel(wall);
+	drawModel(upperWall);
+	for (VerticalWall* sideWall : sideWalls) {
+		drawModel(sideWall);
 	}
 
 	//Swap buffers

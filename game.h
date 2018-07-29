@@ -11,6 +11,7 @@
 #include "models/brick/brick.h"
 #include "models/ball/ball.h"
 #include "models/horizontal-wall/horizontal-wall.h"
+#include "models/vertical-wall/vertical-wall.h"
 #include <vector>
 
 
@@ -112,7 +113,8 @@ private:
 
 	std::vector<Brick*> bricks;
 
-	std::vector<HorizontalWall*> walls;
+	HorizontalWall* upperWall;
+	std::vector<VerticalWall*> sideWalls;
 
 	/**
 	 * Private no-arg constructor to disallow instantiating
