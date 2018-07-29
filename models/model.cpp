@@ -13,11 +13,18 @@ void Model::setMatrix(const glm::mat4 &matrix) {
 }
 
 glm::vec4 Model::getCenter() {
-	return Model::matrix[3];
+	BoundingBox* boundingBox = getBoundingBox();
+	glm::vec4 center = glm::vec4(1.0f);
+
+	center.x = boundingBox->getMaxX() - (boundingBox->getMaxX() - boundingBox->getMinX()) / 2;
+	center.y = boundingBox->getMaxY() - (boundingBox->getMaxY() - boundingBox->getMinY()) / 2;
+	//Z axis is not taken into account
+
+	return center;
 }
 
 BoundingBox* Model::getBoundingBox() {
-	glm::vec4 center = getCenter();
+	glm::vec4 center = Model::matrix[3];
 
 	if (initialBoundingBox == nullptr) {
 		computeInitialBoundingBox();

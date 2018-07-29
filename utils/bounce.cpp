@@ -1,14 +1,24 @@
 //Created by dopieralad on 2018/07/28.
 
 #include <cstdio>
+#include <string>
 #include "bounce.h"
 
-enum Side { top, right, bottom, left };
+enum Side {
+	top = 0, right, bottom, left
+};
+
+std::string enumNames[] = {
+		"top",
+		"right",
+		"bottom",
+		"left",
+};
 
 float calculateSlope(Model* object) {
 	BoundingBox* box = object->getBoundingBox();
 
-	float slope = (box->getMaxY() - box->getMinY()) / (box->getMaxX() - box->getMaxY());
+	float slope = (box->getMaxY() - box->getMinY()) / (box->getMaxX() - box->getMinX());
 
 	return slope;
 }
@@ -17,6 +27,8 @@ Side calculateSide(Ball* ball, Model* object) {
 	glm::vec4 ballCenter = ball->getCenter();
 	glm::vec4 objectCenter = object->getCenter();
 	float objectSlope = calculateSlope(object);
+
+	printf("Slope: %f\n", objectSlope);
 
 	float positiveBallCenterFactor = ballCenter.y - ballCenter.x * objectSlope;
 	float positiveObjectCenterFactor = objectCenter.y - objectCenter.x * objectSlope;
@@ -50,11 +62,13 @@ Side calculateSide(Ball* ball, Model* object) {
 void bounce(Ball* ball, Model* object, glm::vec2* ballCoordsModifiers) {
 	Side side = calculateSide(ball, object);
 
+	printf("Collision from %s side\n", enumNames[side].c_str());
+
 	if (side == top || side == bottom) {
 		ballCoordsModifiers->y = -1 * ballCoordsModifiers->y;
-
-		return;
+	} else {
+		ballCoordsModifiers->x = -1 * ballCoordsModifiers->x;
 	}
 
-	ballCoordsModifiers->x = -1 * ballCoordsModifiers->x;
+	printf("\n");
 };
