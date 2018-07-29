@@ -1,20 +1,60 @@
 //Created by dopieralad on 2018/07/28.
 
+#include <cstdio>
 #include "bounce.h"
+
+enum Side { top, right, bottom, left };
+
+float calculateSlope(Model* object) {
+	BoundingBox* box = object->getBoundingBox();
+
+	float slope = (box->getMaxY() - box->getMinY()) / (box->getMaxX() - box->getMaxY());
+
+	return slope;
+}
+
+Side calculateSide(Ball* ball, Model* object) {
+	glm::vec4 ballCenter = ball->getCenter();
+	glm::vec4 objectCenter = object->getCenter();
+	float objectSlope = calculateSlope(object);
+
+	float positiveBallCenterFactor = ballCenter.y - ballCenter.x * objectSlope;
+	float positiveObjectCenterFactor = objectCenter.y - objectCenter.x * objectSlope;
+
+	bool hasGreaterPositiveFactor = positiveBallCenterFactor > positiveObjectCenterFactor;
+
+	float negativeBallCenterFactor = ballCenter.y - ballCenter.x * -1.0f * objectSlope;
+	float negativeObjectCenterFactor = objectCenter.y - objectCenter.x * -1.0f * objectSlope;
+
+	bool hasGreaterNegativeFactor = negativeBallCenterFactor > negativeObjectCenterFactor;
+
+	printf("ball coords: (%f, %f)\nobject coords: (%f, %f)\n", ballCenter.x, ballCenter.y, objectCenter.x, objectCenter.y);
+	printf("positive: %f %f, negative: %f %f\n", positiveBallCenterFactor, positiveObjectCenterFactor, negativeBallCenterFactor, negativeObjectCenterFactor);
+
+	if (hasGreaterPositiveFactor && hasGreaterNegativeFactor) {
+		return top;
+	}
+
+	if (!hasGreaterPositiveFactor && hasGreaterNegativeFactor) {
+		return right;
+	}
+
+	if (!hasGreaterPositiveFactor && !hasGreaterNegativeFactor) {
+		return bottom;
+	}
+
+	return left;
+}
 
 // TODO: move to Game?
 void bounce(Ball* ball, Model* object, glm::vec2* ballCoordsModifiers) {
-	glm::vec4 ballCenter = ball->getCenter();
-	BoundingBox* objectBox = object->getBoundingBox();
+	Side side = calculateSide(ball, object);
 
-	bool isUnder = ballCenter.y <= objectBox->getMinY() && ballCenter.x >= objectBox->getMinX() && ballCenter.x <= objectBox->getMaxX();
-	bool isAbove = ballCenter.y >= objectBox->getMaxY() && ballCenter.x >= objectBox->getMinX() && ballCenter.x <= objectBox->getMaxX();
-	bool isOnTheLeft = ballCenter.x <= objectBox->getMinX() && ballCenter.y >= objectBox->getMinY() && ballCenter.y <= objectBox->getMaxY();
-	bool isOnTheRight = ballCenter.x >= objectBox->getMaxX() && ballCenter.y >= objectBox->getMinY() && ballCenter.y <= objectBox->getMaxY();
+	if (side == top || side == bottom) {
+		ballCoordsModifiers->y = -1 * ballCoordsModifiers->y;
 
-	if (isUnder || isAbove) {
-		ballCoordsModifiers->y = -1.0f * ballCoordsModifiers->y;
-	} else if (isOnTheLeft || isOnTheRight) {
-		ballCoordsModifiers->x = -1.0f * ballCoordsModifiers->x;
+		return;
 	}
+
+	ballCoordsModifiers->x = -1 * ballCoordsModifiers->x;
 };
