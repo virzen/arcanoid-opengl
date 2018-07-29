@@ -18,6 +18,7 @@
 #include "models/horizontal-wall/horizontal-wall.h"
 #include "models/vertical-wall/vertical-wall.h"
 #include <vector>
+#include <algorithm>
 
 static float padX = 0;
 static float padZ = 0;
@@ -223,11 +224,14 @@ void Game::recalculate() {
 	// Recalculate ball position
 	glm::mat4 ballMatrix = ball->getMatrix();
 	std::vector<Model*> hitObjects;
+	std::vector<Brick*> objectsToDestroy;
 
 	for (Brick* brick : bricks) {
 		if (doesCollide(ball, brick)) {
 			printf("Collides with brick!\n");
 			hitObjects.push_back(brick);
+
+			objectsToDestroy.push_back(brick);
 		}
 	}
 	if (doesCollide(ball, paddle)) {
@@ -249,6 +253,14 @@ void Game::recalculate() {
 
 	for (Model* hitObject : hitObjects) {
 		bounce(ball, hitObject, &ballCoordsModifiers);
+	}
+
+	for (Brick* objectToDestroy : objectsToDestroy) {
+		ptrdiff_t pos = std::distance(bricks.begin(), std::find(bricks.begin(), bricks.end(), objectToDestroy));
+
+		if (pos < bricks.size()) {
+			bricks.erase(bricks.begin() + pos);
+		}
 	}
 
 	ballMatrix = glm::translate(ballMatrix, glm::vec3(BALL_SPEED * time * ballCoordsModifiers.x, BALL_SPEED * time * ballCoordsModifiers.y, 0.0f));
