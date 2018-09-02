@@ -99,9 +99,6 @@ void Game::init() {
 	paddle = new Paddle();
 
 	ball = new Ball();
-	printf("Ball bounding box:\n");
-	auto ballBoundingBox = ball->getBoundingBox();
-	printf("Ball: %020f %020f %020f %020f\n", ballBoundingBox->getMinX(), ballBoundingBox->getMaxX(), ballBoundingBox->getMinY(), ballBoundingBox->getMaxY());
 
 	// Instantiate and place the bricks
 	for (int i = 0; i < BRICKS_COUNT; i++) {
@@ -269,7 +266,7 @@ void Game::recalculate() {
 		if (brickPosition != vectorEnd) { // Given brick was found in the vector
 			auto distance = std::distance(vectorBeginning, brickPosition);
 			bricks.erase(vectorBeginning + distance);
-			//printf("Destroyed brick with index: '%td'!\n", distance);
+			printf("Destroyed brick with index: '%td'!\n", distance);
 		}
 	}
 
