@@ -58,8 +58,6 @@ public:
 
 	void loadModel(const char* filename);
 
-	void loadBoundingVertices();
-
 private:
 	/**
 	 * A number of vertices shared among all instances of this class.
@@ -81,10 +79,10 @@ private:
 	 * A 4x4 matrix representing this model's position.
 	 */
 	glm::mat4 matrix;
-	glm::vec4 minXBoundVertex;
-	glm::vec4 maxXBoundVertex;
-	glm::vec4 minYBoundVertex;
-	glm::vec4 maxYBoundVertex;
+	float minX = 0.0f;
+	float maxX = 0.0f;
+	float minY = 0.0f;
+	float maxY = 0.0f;
 };
 
 
