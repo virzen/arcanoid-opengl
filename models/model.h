@@ -18,8 +18,6 @@
 class Model {
 
 public:
-	Model();
-
 	unsigned int getVertexCount() const;
 
 	void setVertexCount(unsigned int vertexCount);
@@ -61,10 +59,6 @@ public:
 	void loadModel(const char* filename);
 
 private:
-	BoundingBox* initialBoundingBox;
-
-	void computeInitialBoundingBox();
-
 	/**
 	 * A number of vertices shared among all instances of this class.
 	 */

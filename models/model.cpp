@@ -30,13 +30,6 @@ glm::vec4 Model::getCenter() {
 }
 
 BoundingBox* Model::getBoundingBox() {
-	computeInitialBoundingBox();
-
-	return new BoundingBox(initialBoundingBox->getMinX(), initialBoundingBox->getMinY(),
-	                       initialBoundingBox->getMaxX(), initialBoundingBox->getMaxY());
-}
-
-void Model::computeInitialBoundingBox() {
 	float minX = MAX_COORD;
 	float minY = MAX_COORD;
 	float maxX = MIN_COORD;
@@ -62,10 +55,8 @@ void Model::computeInitialBoundingBox() {
 		maxY = std::max(maxY, verticesInWorldSpace[i + 1]);
 	}
 
-	initialBoundingBox = new BoundingBox(minX, minY, maxX, maxY);
+	return new BoundingBox(minX, minY, maxX, maxY);
 }
-
-Model::Model() : initialBoundingBox(nullptr) {}
 
 void Model::rotate(float angle, glm::vec3 axis) {
 	matrix = glm::rotate(matrix, angle, axis);
