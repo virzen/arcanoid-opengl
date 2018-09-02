@@ -1,25 +1,14 @@
-/*
-Niniejszy program jest wolnym oprogramowaniem; możesz go
-rozprowadzać dalej i / lub modyfikować na warunkach Powszechnej
-Licencji Publicznej GNU, wydanej przez Fundację Wolnego
-Oprogramowania - według wersji 2 tej Licencji lub(według twojego
-wyboru) którejś z późniejszych wersji.
+//Created by dopieralad on 2018/05/01.
 
-Niniejszy program rozpowszechniany jest z nadzieją, iż będzie on
-użyteczny - jednak BEZ JAKIEJKOLWIEK GWARANCJI, nawet domyślnej
-gwarancji PRZYDATNOŚCI HANDLOWEJ albo PRZYDATNOŚCI DO OKREŚLONYCH
-ZASTOSOWAŃ.W celu uzyskania bliższych informacji sięgnij do
-Powszechnej Licencji Publicznej GNU.
+#ifndef OPENGL_ARCANOID_CONSTANTS_H
+#define OPENGL_ARCANOID_CONSTANTS_H
 
-Z pewnością wraz z niniejszym programem otrzymałeś też egzemplarz
-Powszechnej Licencji Publicznej GNU(GNU General Public License);
-jeśli nie - napisz do Free Software Foundation, Inc., 59 Temple
-Place, Fifth Floor, Boston, MA  02110 - 1301  USA
-*/
+const float PI = 3.141592653589793f; //PI number approximation
 
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+const float CAMERA_SPEED = 2.0f; //Speed of camera's movement in units per second
+const float PAD_SPEED = 5.0f; //Speed of paddle's movement in units per second
 
-const float PI = 3.141592653589793f;
+const float BALL_SPEED = 4.0f;
 
-#endif
+
+#endif //OPENGL_ARCANOID_CONSTANTS_H

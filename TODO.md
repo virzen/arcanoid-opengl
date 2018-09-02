@@ -40,5 +40,5 @@ Code in *0.1* should provide a stable codebase for future development.
   
 - **Common codebase for adding new models and behaviours**
 
-  Code should allow for adding new models effortlessly by creating a new class,
+  Code should allow for adding new models effortlessly by creating a new object,
   providing `*.obj` file and optionally other files describing it.
