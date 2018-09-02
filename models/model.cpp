@@ -7,6 +7,9 @@
 #include "model.h"
 #include "../utils/obj_loader.h"
 
+#define MAX_COORD 1000.0f
+#define MIN_COORD -MAX_COORD
+
 const glm::mat4 &Model::getMatrix() const {
 	return matrix;
 }
@@ -34,10 +37,10 @@ BoundingBox* Model::getBoundingBox() {
 }
 
 void Model::computeInitialBoundingBox() {
-	float minX = std::numeric_limits<float>::max();
-	float minY = std::numeric_limits<float>::max();
-	float maxX = std::numeric_limits<float>::min();
-	float maxY = std::numeric_limits<float>::min();
+	float minX = MAX_COORD;
+	float minY = MAX_COORD;
+	float maxX = MIN_COORD;
+	float maxY = MIN_COORD;
 
 	float* vertices = getVertices();
 	float* verticesInWorldSpace = new float[getVertexCount()];
