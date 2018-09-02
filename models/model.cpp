@@ -7,9 +7,6 @@
 #include "model.h"
 #include "../utils/obj_loader.h"
 
-#define MAX_COORD 1000.0f
-#define MIN_COORD -MAX_COORD
-
 const glm::mat4 &Model::getMatrix() const {
 	return matrix;
 }
@@ -30,30 +27,10 @@ glm::vec4 Model::getCenter() {
 }
 
 BoundingBox* Model::getBoundingBox() {
-	float minX = MAX_COORD;
-	float minY = MAX_COORD;
-	float maxX = MIN_COORD;
-	float maxY = MIN_COORD;
-
-	float* vertices = getVertices();
-	float* verticesInWorldSpace = new float[getVertexCount()];
-	glm::vec4 singleVertex;
-
-	for (int i = 0; i < getVertexCount(); i += 4) {
-		singleVertex = matrix * glm::vec4(vertices[i], vertices[i + 1], vertices[i + 2], vertices[i + 3]);
-		verticesInWorldSpace[i] = singleVertex[0];
-		verticesInWorldSpace[i + 1] = singleVertex[1];
-		verticesInWorldSpace[i + 2] = singleVertex[2];
-		verticesInWorldSpace[i + 3] = singleVertex[3];
-	}
-
-	for (int i = 0; i < getVertexCount(); i += 4) {
-		minX = std::min(minX, verticesInWorldSpace[i]);
-		minY = std::min(minY, verticesInWorldSpace[i + 1]);
-
-		maxX = std::max(maxX, verticesInWorldSpace[i]);
-		maxY = std::max(maxY, verticesInWorldSpace[i + 1]);
-	}
+	float minX = (matrix * minXBoundVertex).x;
+	float maxX = (matrix * maxXBoundVertex).x;
+	float minY = (matrix * minYBoundVertex).y;
+	float maxY = (matrix * maxYBoundVertex).y;
 
 	return new BoundingBox(minX, minY, maxX, maxY);
 }
@@ -94,6 +71,38 @@ void Model::loadModel(const char* filename) {
 		colors[vertexIndex + 2] = (float) i / getVertexCount();
 		colors[vertexIndex + 3] = 1.0f;
 		vertexIndex += 4;
+	}
+
+	loadBoundingVertices();
+}
+
+void Model::loadBoundingVertices() {
+	float* vertices = getVertices();
+
+	auto firstVertex = glm::vec4(vertices[0], vertices[1], vertices[2], vertices[3]);
+	minXBoundVertex = firstVertex;
+	maxXBoundVertex = firstVertex;
+	minYBoundVertex = firstVertex;
+	maxYBoundVertex = firstVertex;
+
+	for (int i = 0; i < getVertexCount(); i += 4) {
+		glm::vec4 vertex = glm::vec4(vertices[i], vertices[i + 1], vertices[i + 2], vertices[i + 3]);
+
+		if (vertex.x < minXBoundVertex.x) {
+			minXBoundVertex = vertex;
+		}
+
+		if (vertex.x > maxXBoundVertex.x) {
+			maxXBoundVertex = vertex;
+		}
+
+		if (vertex.y < minYBoundVertex.y) {
+			minYBoundVertex = vertex;
+		}
+
+		if (vertex.y > maxYBoundVertex.y) {
+			maxYBoundVertex = vertex;
+		}
 	}
 }
 
