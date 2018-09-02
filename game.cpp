@@ -224,14 +224,14 @@ void Game::recalculate() {
 	// Recalculate ball position
 	glm::mat4 ballMatrix = ball->getMatrix();
 	std::vector<Model*> hitObjects;
-	std::vector<Brick*> objectsToDestroy;
+	std::vector<Brick*> destroyedBricks;
 
 	for (Brick* brick : bricks) {
 		if (doesCollide(ball, brick)) {
 			printf("Collides with brick!\n");
 			hitObjects.push_back(brick);
 
-			objectsToDestroy.push_back(brick);
+			destroyedBricks.push_back(brick);
 		}
 	}
 	if (doesCollide(ball, paddle)) {
@@ -255,8 +255,8 @@ void Game::recalculate() {
 		bounce(ball, hitObject, &ballCoordsModifiers);
 	}
 
-	for (Brick* objectToDestroy : objectsToDestroy) {
-		ptrdiff_t pos = std::distance(bricks.begin(), std::find(bricks.begin(), bricks.end(), objectToDestroy));
+	for (Brick* destroyedBrick : destroyedBricks) {
+		ptrdiff_t pos = std::distance(bricks.begin(), std::find(bricks.begin(), bricks.end(), destroyedBrick));
 
 		if (pos < bricks.size()) {
 			bricks.erase(bricks.begin() + pos);
