@@ -256,10 +256,14 @@ void Game::recalculate() {
 	}
 
 	for (Brick* destroyedBrick : destroyedBricks) {
-		ptrdiff_t pos = std::distance(bricks.begin(), std::find(bricks.begin(), bricks.end(), destroyedBrick));
+		auto vectorBeginning = bricks.begin();
+		auto vectorEnd = bricks.end();
+		auto brickPosition = std::find(vectorBeginning, vectorEnd, destroyedBrick);
 
-		if (pos < bricks.size()) {
-			bricks.erase(bricks.begin() + pos);
+		if (brickPosition != vectorEnd) {
+			auto distance = std::distance(vectorBeginning, brickPosition);
+			bricks.erase(vectorBeginning + distance);
+			printf("Destroyed brick with index: '%td'!\n", distance);
 		}
 	}
 
