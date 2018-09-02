@@ -21,7 +21,7 @@ glm::vec4 Model::getCenter() {
 
 	center.x = boundingBox->getMaxX() - (boundingBox->getMaxX() - boundingBox->getMinX()) / 2;
 	center.y = boundingBox->getMaxY() - (boundingBox->getMaxY() - boundingBox->getMinY()) / 2;
-	//Z axis is not taken into account
+	center.z = 0.0f; // Z axis is not taken into account and is 0 by default
 
 	return center;
 }
