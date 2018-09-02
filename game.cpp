@@ -260,7 +260,7 @@ void Game::recalculate() {
 		auto vectorEnd = bricks.end();
 		auto brickPosition = std::find(vectorBeginning, vectorEnd, destroyedBrick);
 
-		if (brickPosition != vectorEnd) {
+		if (brickPosition != vectorEnd) { // Given brick was found in the vector
 			auto distance = std::distance(vectorBeginning, brickPosition);
 			bricks.erase(vectorBeginning + distance);
 			printf("Destroyed brick with index: '%td'!\n", distance);
