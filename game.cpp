@@ -270,8 +270,7 @@ void Game::recalculate() {
 		}
 	}
 
-	ballMatrix = glm::translate(ballMatrix, glm::vec3(BALL_SPEED * time * ballCoordsModifiers.x, BALL_SPEED * time * ballCoordsModifiers.y, 0.0f));
-	ball->setMatrix(ballMatrix);
+	ball->translate(glm::vec3(BALL_SPEED * time * ballCoordsModifiers.x, BALL_SPEED * time * ballCoordsModifiers.y, 0.0f));
 }
 
 void Game::draw() {
