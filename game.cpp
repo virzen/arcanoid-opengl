@@ -21,7 +21,6 @@
 #include <algorithm>
 
 static float padX = 0;
-static float padZ = 0;
 static float cameraRotation = 0;
 
 static const int BRICKS_COUNT = 5;
@@ -172,10 +171,6 @@ void Game::handle_key(GLFWwindow* window, int key, int scancode, int action, int
 			padX = -1;
 		} else if (key == GLFW_KEY_RIGHT) {
 			padX = 1;
-		} else if (key == GLFW_KEY_UP) {
-			padZ = -1;
-		} else if (key == GLFW_KEY_DOWN) {
-			padZ = 1;
 		} else if (key == GLFW_KEY_A) {
 			cameraRotation = -1;
 		} else if (key == GLFW_KEY_D) {
@@ -186,10 +181,6 @@ void Game::handle_key(GLFWwindow* window, int key, int scancode, int action, int
 			padX = 0;
 		} else if (key == GLFW_KEY_RIGHT) {
 			padX = 0;
-		} else if (key == GLFW_KEY_UP) {
-			padZ = 0;
-		} else if (key == GLFW_KEY_DOWN) {
-			padZ = 0;
 		} else if (key == GLFW_KEY_A || key == GLFW_KEY_D) {
 			cameraRotation = 0;
 		}
@@ -222,9 +213,7 @@ void Game::recalculate() {
 	);
 
 	//Recalculate paddle position
-	glm::mat4 padMatrix = paddle->getMatrix();
-	padMatrix = glm::translate(padMatrix, glm::vec3(PAD_SPEED * time * padX, 0.0f, PAD_SPEED * time * padZ));
-	paddle->setMatrix(padMatrix);
+	paddle->translate(glm::vec3(PAD_SPEED * time * padX, 0.0f, 0.0f));
 
 	// Recalculate ball position
 	glm::mat4 ballMatrix = ball->getMatrix();
