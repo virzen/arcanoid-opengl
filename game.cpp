@@ -53,8 +53,6 @@ void Game::init() {
 
 	//Create a 500 by 500 window and OpenGL context
 	glWindow = glfwCreateWindow(500, 500, "Arkanoid", nullptr, nullptr);
-	//Initialize the aspect according to window's dimensions
-	windowAspect = 1;
 
 	//Close program if window could not be created
 	if (!glWindow) {
@@ -64,6 +62,10 @@ void Game::init() {
 
 	//Make window active
 	glfwMakeContextCurrent(glWindow);
+	//Maximize the window
+	glfwMaximizeWindow(glWindow);
+	//Initialize the aspect according to window's dimensions
+	windowAspect = 1;
 	//Wait for screen synchronization signal before swapping buffers (VSync)
 	glfwSwapInterval(1);
 
