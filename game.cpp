@@ -214,6 +214,13 @@ void Game::recalculate() {
 
 	//Recalculate paddle position
 	paddle->translate(glm::vec3(PAD_SPEED * time * padX, 0.0f, 0.0f));
+	//Keep paddle between side walls
+	auto paddleBoundingBox = paddle->getBoundingBox();
+	if (paddleBoundingBox->getMaxX() > 10.0f) {
+		paddle->translate(glm::vec3(10.0f - paddleBoundingBox->getMaxX(), 0.0f, 0.0f));
+	} else if (paddleBoundingBox->getMinX() < -10.0f) {
+		paddle->translate(glm::vec3(-10.0f - paddleBoundingBox->getMinX(), 0.0f, 0.0f));
+	}
 
 	// Recalculate ball position
 	glm::mat4 ballMatrix = ball->getMatrix();
