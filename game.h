@@ -146,6 +146,8 @@ private:
 	 */
 	void drawModel(Model* model);
 
+	void recalculatePaddle();
+
 	/**
 	 * Recalculates positions of game's models.
 	 */

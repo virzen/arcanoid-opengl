@@ -198,6 +198,35 @@ void Game::resetTimer() {
 	//printf("\rFPS: %f", 1 / time);
 }
 
+void Game::recalculatePaddle() {
+	//Recalculate paddle speed
+	auto paddleSpeed = paddle->getSpeed();
+	paddleSpeed = paddleSpeed + PAD_ACCELERATION * padX * time;
+	paddleSpeed = std::min(paddleSpeed, PAD_MAX_SPEED);
+	paddleSpeed = std::max(paddleSpeed, -PAD_MAX_SPEED);
+
+	//Update paddle's position according to it's speed
+	paddle->translate(glm::vec3(paddleSpeed * time, 0.0f, 0.0f));
+
+	//Keep paddle between side walls
+	auto paddleBoundingBox = paddle->getBoundingBox();
+	if (paddleBoundingBox->getMaxX() > 10.0f) {
+		paddleSpeed = 0.0f;
+		paddle->translate(glm::vec3(10.0f - paddleBoundingBox->getMaxX(), 0.0f, 0.0f));
+	} else if (paddleBoundingBox->getMinX() < -10.0f) {
+		paddleSpeed = 0.0f;
+		paddle->translate(glm::vec3(-10.0f - paddleBoundingBox->getMinX(), 0.0f, 0.0f));
+	}
+
+	//Apply regression to paddle's speed
+	int speedSign = paddleSpeed > 0 ? 1 : -1;
+	paddleSpeed = std::abs(paddleSpeed); //Use absolute value to avoid checking for negative values
+	double paddleRegression = std::max(paddleSpeed * PAD_REGRESSION * time, PAD_MIN_REGRESSION); //Compute actual regression
+	double paddleSpeedDecrease = std::min(paddleRegression, paddleSpeed); //Avoid accelerating due to regression
+	paddleSpeed = paddleSpeed - paddleSpeedDecrease; //Decrease the speed
+	paddle->setSpeed(paddleSpeed * speedSign); //Set the speed with the original sign
+}
+
 void Game::recalculate() {
 	//Compute perspective matrix
 	perspectiveMatrix = glm::perspective(50 * PI / 180, windowAspect, 1.0f, 50.0f);
@@ -212,15 +241,7 @@ void Game::recalculate() {
 			glm::vec3(0.0f, 1.0f, 0.0f)
 	);
 
-	//Recalculate paddle position
-	paddle->translate(glm::vec3(PAD_SPEED * time * padX, 0.0f, 0.0f));
-	//Keep paddle between side walls
-	auto paddleBoundingBox = paddle->getBoundingBox();
-	if (paddleBoundingBox->getMaxX() > 10.0f) {
-		paddle->translate(glm::vec3(10.0f - paddleBoundingBox->getMaxX(), 0.0f, 0.0f));
-	} else if (paddleBoundingBox->getMinX() < -10.0f) {
-		paddle->translate(glm::vec3(-10.0f - paddleBoundingBox->getMinX(), 0.0f, 0.0f));
-	}
+	recalculatePaddle();
 
 	// Recalculate ball position
 	glm::mat4 ballMatrix = ball->getMatrix();
