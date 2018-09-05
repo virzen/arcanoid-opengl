@@ -21,48 +21,17 @@ glm::vec4 Model::getCenter() {
 
 	center.x = boundingBox->getMaxX() - (boundingBox->getMaxX() - boundingBox->getMinX()) / 2;
 	center.y = boundingBox->getMaxY() - (boundingBox->getMaxY() - boundingBox->getMinY()) / 2;
-	//Z axis is not taken into account
+	center.z = 0.0f; // Z axis is not taken into account and is 0 by default
 
 	return center;
 }
 
 BoundingBox* Model::getBoundingBox() {
-	computeInitialBoundingBox();
+	auto leftBottomVertex = matrix * glm::vec4(minX, minY, 0.0f, 1.0f);
+	auto rightTopVertex = matrix * glm::vec4(maxX, maxY, 0.0f, 1.0f);
 
-	return new BoundingBox(initialBoundingBox->getMinX(), initialBoundingBox->getMinY(),
-	                       initialBoundingBox->getMaxX(), initialBoundingBox->getMaxY());
+	return new BoundingBox(leftBottomVertex.x, leftBottomVertex.y, rightTopVertex.x, rightTopVertex.y);
 }
-
-void Model::computeInitialBoundingBox() {
-	float minX = std::numeric_limits<float>::max();
-	float minY = std::numeric_limits<float>::max();
-	float maxX = std::numeric_limits<float>::min();
-	float maxY = std::numeric_limits<float>::min();
-
-	float* vertices = getVertices();
-	float* verticesInWorldSpace = new float[getVertexCount()];
-	glm::vec4 singleVertex;
-
-	for (int i = 0; i < getVertexCount(); i += 4) {
-		singleVertex = matrix * glm::vec4(vertices[i], vertices[i + 1], vertices[i + 2], vertices[i + 3]);
-		verticesInWorldSpace[i] = singleVertex[0];
-		verticesInWorldSpace[i + 1] = singleVertex[1];
-		verticesInWorldSpace[i + 2] = singleVertex[2];
-		verticesInWorldSpace[i + 3] = singleVertex[3];
-	}
-
-	for (int i = 0; i < getVertexCount(); i += 4) {
-		minX = std::min(minX, verticesInWorldSpace[i]);
-		minY = std::min(minY, verticesInWorldSpace[i + 1]);
-
-		maxX = std::max(maxX, verticesInWorldSpace[i]);
-		maxY = std::max(maxY, verticesInWorldSpace[i + 1]);
-	}
-
-	initialBoundingBox = new BoundingBox(minX, minY, maxX, maxY);
-}
-
-Model::Model() : initialBoundingBox(nullptr) {}
 
 void Model::rotate(float angle, glm::vec3 axis) {
 	matrix = glm::rotate(matrix, angle, axis);
@@ -89,17 +58,34 @@ void Model::loadModel(const char* filename) {
 	auto* normals = (float*) malloc(sizeof(float) * getVertexCount() * 4);
 	setNormals(normals);
 
-	unsigned int vertexIndex = 0;
-	for (int i = 0; i < objVertices.size(); i++) {
-		vertices[vertexIndex] = objVertices[i].x;
-		vertices[vertexIndex + 1] = objVertices[i].y;
-		vertices[vertexIndex + 2] = objVertices[i].z;
+
+	for (int i = 0, vertexIndex = 0; i < objVertices.size(); i++) {
+		auto vertex = objVertices[i];
+		vertices[vertexIndex] = vertex.x;
+		vertices[vertexIndex + 1] = vertex.y;
+		vertices[vertexIndex + 2] = vertex.z;
 		vertices[vertexIndex + 3] = 1.0f;
 		colors[vertexIndex] = 1.0f;
 		colors[vertexIndex + 1] = (float) i / getVertexCount();
 		colors[vertexIndex + 2] = (float) i / getVertexCount();
 		colors[vertexIndex + 3] = 1.0f;
 		vertexIndex += 4;
+
+		if (vertex.x < minX) {
+			minX = vertex.x;
+		}
+
+		if (vertex.x > maxX) {
+			maxX = vertex.x;
+		}
+
+		if (vertex.y < minY) {
+			minY = vertex.y;
+		}
+
+		if (vertex.y > maxY) {
+			maxY = vertex.y;
+		}
 	}
 }
 

@@ -58,11 +58,35 @@ Side calculateSide(Ball* ball, Model* object) {
 	return left;
 }
 
+void reposition(Ball* ball, Model* object, Side side) {
+	auto ballBoundingBox = ball->getBoundingBox();
+	auto objectBoundingBox = object->getBoundingBox();
+
+	if (side == top) {
+		auto yOffset = objectBoundingBox->getMaxY() - ballBoundingBox->getMinY();
+		printf("Offset: %020f", yOffset);
+		ball->translate(glm::vec3(0.0f, yOffset, 0.0f));
+	} else if (side == bottom) {
+		auto yOffset = objectBoundingBox->getMinY() - ballBoundingBox->getMaxY();
+		printf("Offset: %020f", yOffset);
+		ball->translate(glm::vec3(0.0f, yOffset, 0.0f));
+	} else if (side == left) {
+		auto xOffset = objectBoundingBox->getMinX() - ballBoundingBox->getMaxX();
+		printf("Offset: %020f", xOffset);
+		ball->translate(glm::vec3(xOffset, 0.0f, 0.0f));
+	} else if (side == right) {
+		auto xOffset = objectBoundingBox->getMaxX() - ballBoundingBox->getMinX();
+		printf("Offset: %020f", xOffset);
+		ball->translate(glm::vec3(xOffset, 0.0f, 0.0f));
+	}
+}
+
 // TODO: move to Game?
 void bounce(Ball* ball, Model* object, glm::vec2* ballCoordsModifiers) {
 	Side side = calculateSide(ball, object);
 
 	printf("Collision from %s side\n", enumNames[side].c_str());
+	reposition(ball, object, side);
 
 	if (side == top || side == bottom) {
 		ballCoordsModifiers->y = -1 * ballCoordsModifiers->y;

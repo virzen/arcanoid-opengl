@@ -13,8 +13,8 @@ bool doesCollide(Ball* ball,
 	BoundingBox* ballBoundingBox = ball->getBoundingBox();
 	BoundingBox* objectBoundingBox = object->getBoundingBox();
 
-	bool collisionX = ballBoundingBox->getMaxX() >= objectBoundingBox->getMinX() && objectBoundingBox->getMaxX() >= ballBoundingBox->getMinX();
-	bool collisionY = ballBoundingBox->getMaxY() >= objectBoundingBox->getMinY() && objectBoundingBox->getMaxY() >= ballBoundingBox->getMinY();
+	bool collisionX = ballBoundingBox->getMaxX() > objectBoundingBox->getMinX() && objectBoundingBox->getMaxX() > ballBoundingBox->getMinX();
+	bool collisionY = ballBoundingBox->getMaxY() > objectBoundingBox->getMinY() && objectBoundingBox->getMaxY() > ballBoundingBox->getMinY();
 
 	return collisionX && collisionY;
 }

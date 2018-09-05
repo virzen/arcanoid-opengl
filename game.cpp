@@ -40,6 +40,9 @@ Game* Game::get() {
 }
 
 void Game::init() {
+	//Disable standard out buffering
+	setbuf(stdout, nullptr);
+
 	//Register OpenGL error handling procedure
 	glfwSetErrorCallback(Errors::opengl_error_callback);
 
@@ -224,14 +227,14 @@ void Game::recalculate() {
 	// Recalculate ball position
 	glm::mat4 ballMatrix = ball->getMatrix();
 	std::vector<Model*> hitObjects;
-	std::vector<Brick*> objectsToDestroy;
+	std::vector<Brick*> destroyedBricks;
 
 	for (Brick* brick : bricks) {
 		if (doesCollide(ball, brick)) {
 			printf("Collides with brick!\n");
 			hitObjects.push_back(brick);
 
-			objectsToDestroy.push_back(brick);
+			destroyedBricks.push_back(brick);
 		}
 	}
 	if (doesCollide(ball, paddle)) {
@@ -255,16 +258,19 @@ void Game::recalculate() {
 		bounce(ball, hitObject, &ballCoordsModifiers);
 	}
 
-	for (Brick* objectToDestroy : objectsToDestroy) {
-		ptrdiff_t pos = std::distance(bricks.begin(), std::find(bricks.begin(), bricks.end(), objectToDestroy));
+	for (Brick* destroyedBrick : destroyedBricks) {
+		auto vectorBeginning = bricks.begin();
+		auto vectorEnd = bricks.end();
+		auto brickPosition = std::find(vectorBeginning, vectorEnd, destroyedBrick);
 
-		if (pos < bricks.size()) {
-			bricks.erase(bricks.begin() + pos);
+		if (brickPosition != vectorEnd) { // Given brick was found in the vector
+			auto distance = std::distance(vectorBeginning, brickPosition);
+			bricks.erase(vectorBeginning + distance);
+			printf("Destroyed brick with index: '%td'!\n", distance);
 		}
 	}
 
-	ballMatrix = glm::translate(ballMatrix, glm::vec3(BALL_SPEED * time * ballCoordsModifiers.x, BALL_SPEED * time * ballCoordsModifiers.y, 0.0f));
-	ball->setMatrix(ballMatrix);
+	ball->translate(glm::vec3(BALL_SPEED * time * ballCoordsModifiers.x, BALL_SPEED * time * ballCoordsModifiers.y, 0.0f));
 }
 
 void Game::draw() {
