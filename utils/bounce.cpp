@@ -82,6 +82,14 @@ void reposition(Ball* ball, Model* object, Side side) {
 	}
 }
 
+void accelerateFromCollision(Ball* ball, Model* object, Side side) {
+	if (side == top || side == bottom) {
+		ball->setSpeedX(ball->getSpeedX() + object->getSpeedX() * BOUNCE_ACCELERATION_FACTOR);
+	}
+
+	//TODO Handle side acceleration
+}
+
 // TODO: move to Game?
 void bounce(Ball* ball, Model* object) {
 	Side side = calculateSide(ball, object);
@@ -94,4 +102,6 @@ void bounce(Ball* ball, Model* object) {
 	} else {
 		ball->setSpeedX(-ball->getSpeedX());
 	}
+
+	accelerateFromCollision(ball, object, side);
 }

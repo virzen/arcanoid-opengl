@@ -11,6 +11,7 @@ const double PAD_ACCELERATION = 100.0f; //Paddle's acceleration in units per squ
 const double PAD_REGRESSION = 0.3f; //Paddle's speed regression as a fraction of actual speed
 const double PAD_MIN_REGRESSION = 1.0f; //Paddle's minimal speed regression in units
 const float BALL_SPEED = 4.0f;
+const float BOUNCE_ACCELERATION_FACTOR = 0.5f;
 
 
 #endif //OPENGL_ARCANOID_CONSTANTS_H
