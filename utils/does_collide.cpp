@@ -8,8 +8,6 @@
 // TODO: move to Game?
 bool doesCollide(Ball* ball,
                  Model* object) {
-	glm::vec4 ballCenter = ball->getCenter();
-	glm::vec4 objectCenter = object->getCenter();
 	BoundingBox* ballBoundingBox = ball->getBoundingBox();
 	BoundingBox* objectBoundingBox = object->getBoundingBox();
 
