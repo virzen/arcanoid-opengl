@@ -127,7 +127,45 @@ double Model::getSpeed() const {
 }
 
 void Model::setSpeed(double speed) {
-	Model::speed = speed;
+	if (speed < 0) {
+		setDirection(direction + PI);
+	}
+
+	Model::speed = std::abs(speed);
+}
+
+void Model::addSpeed(double speed, double direction) {
+	// Calculate speeds on both axes
+	double speedX = speed * cos(direction);
+	double speedY = speed * sin(direction);
+
+	double currentSpeedX = Model::speed * cos(Model::direction);
+	double currentSpeedY = Model::speed * sin(Model::direction);
+
+	double finalSpeedX = speedX + currentSpeedX;
+	double finalSpeedY = speedY + currentSpeedY;
+
+	// Calculate and set resultant speed
+	double finalSpeed = sqrt(pow(finalSpeedX, 2.0f) + pow(finalSpeedY, 2.0f));
+	setSpeed(finalSpeed);
+
+	// Calulcate and set resultant direction
+	double finalDirection;
+
+	/*
+	 * Tangent is unspecified when the opposite side (namely: Y) is 0.
+	 * Because we are handling double values here, we want to round
+	 * final Y speed to avoid strange behaviours.
+	 * When Y speed is close to 0 we calculate final direction
+	 * based on final X speed only
+	 */
+	if (std::abs(finalSpeedY) < 0.00001) {
+		finalDirection = finalSpeedX >= 0.0 ? 0.0 : PI;
+	} else {
+		double tangent = finalSpeedY / finalSpeedX;
+		finalDirection = atan(tangent);
+	}
+	setDirection(finalDirection);
 }
 
 double Model::getDirection() const {

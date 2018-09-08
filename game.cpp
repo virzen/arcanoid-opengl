@@ -199,32 +199,29 @@ void Game::resetTimer() {
 }
 
 void Game::recalculatePaddle() {
-	//Recalculate paddle speed
-	auto paddleSpeed = paddle->getSpeed();
-	paddleSpeed = paddleSpeed + PAD_ACCELERATION * padX * time;
-	paddleSpeed = std::min(paddleSpeed, PAD_MAX_SPEED);
-	paddleSpeed = std::max(paddleSpeed, -PAD_MAX_SPEED);
+	//Accelerate the paddle
+	paddle->addSpeed(padX * PAD_ACCELERATION * time, 0.0f);
+
+	//Keep pad maximum speed
+	paddle->setSpeed(std::min(paddle->getSpeed(), PAD_MAX_SPEED));
 
 	//Update paddle's position according to it's speed
-	paddle->translate(glm::vec3(paddleSpeed * time, 0.0f, 0.0f));
+	paddle->translate(glm::vec3(cos(paddle->getDirection()) * paddle->getSpeed() * time, 0.0f, 0.0f));
 
 	//Keep paddle between side walls
 	auto paddleBoundingBox = paddle->getBoundingBox();
 	if (paddleBoundingBox->getMaxX() > 10.0f) {
-		paddleSpeed = 0.0f;
+		paddle->setSpeed(0.0f);
 		paddle->translate(glm::vec3(10.0f - paddleBoundingBox->getMaxX(), 0.0f, 0.0f));
 	} else if (paddleBoundingBox->getMinX() < -10.0f) {
-		paddleSpeed = 0.0f;
+		paddle->setSpeed(0.0f);
 		paddle->translate(glm::vec3(-10.0f - paddleBoundingBox->getMinX(), 0.0f, 0.0f));
 	}
 
 	//Apply regression to paddle's speed
-	int speedSign = paddleSpeed > 0 ? 1 : -1;
-	paddleSpeed = std::abs(paddleSpeed); //Use absolute value to avoid checking for negative values
-	double paddleRegression = std::max(paddleSpeed * PAD_REGRESSION * time, PAD_MIN_REGRESSION); //Compute actual regression
-	double paddleSpeedDecrease = std::min(paddleRegression, paddleSpeed); //Avoid accelerating due to regression
-	paddleSpeed = paddleSpeed - paddleSpeedDecrease; //Decrease the speed
-	paddle->setSpeed(paddleSpeed * speedSign); //Set the speed with the original sign
+	double paddleRegression = std::max(paddle->getSpeed() * PAD_REGRESSION * time, PAD_MIN_REGRESSION); //Compute actual regression
+	double paddleSpeedDecrease = std::min(paddleRegression, paddle->getSpeed()); //Avoid accelerating due to regression
+	paddle->addSpeed(paddleSpeedDecrease, paddle->getDirection() + PI); //Decrease the speed
 }
 
 void Game::recalculate() {
