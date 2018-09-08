@@ -177,9 +177,9 @@ void Game::handle_key(GLFWwindow* window, int key, int scancode, int action, int
 			cameraRotation = 1;
 		}
 	} else if (action == GLFW_RELEASE) {
-		if (key == GLFW_KEY_LEFT) {
+		if (key == GLFW_KEY_LEFT && padX == -1) {
 			padX = 0;
-		} else if (key == GLFW_KEY_RIGHT) {
+		} else if (key == GLFW_KEY_RIGHT && padX == 1) {
 			padX = 0;
 		} else if (key == GLFW_KEY_A || key == GLFW_KEY_D) {
 			cameraRotation = 0;
