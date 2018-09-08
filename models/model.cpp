@@ -122,64 +122,18 @@ void Model::setNormals(float* normals) {
 	Model::normals = normals;
 }
 
-double Model::getSpeed() const {
-	return speed;
+double Model::getSpeedX() const {
+	return speedX;
 }
 
-void Model::setSpeed(double speed) {
-	if (speed < 0) {
-		setDirection(direction + PI);
-	}
-
-	Model::speed = std::abs(speed);
+void Model::setSpeedX(double speedX) {
+	Model::speedX = speedX;
 }
 
-void Model::accelerate(double acceleration, double direction) {
-	// Calculate speeds on both axes
-	double accelerationX = acceleration * cos(direction);
-	double accelerationY = acceleration * sin(direction);
-
-	double currentSpeedX = Model::speed * cos(Model::direction);
-	double currentSpeedY = Model::speed * sin(Model::direction);
-
-	double finalSpeedX = accelerationX + currentSpeedX;
-	double finalSpeedY = accelerationY + currentSpeedY;
-
-	// Calculate and set resultant speed
-	double finalSpeed = sqrt(pow(finalSpeedX, 2.0f) + pow(finalSpeedY, 2.0f));
-	setSpeed(finalSpeed);
-
-	// Calulcate and set resultant direction
-	double finalDirection;
-
-	/*
-	 * Tangent is unspecified when the opposite side (namely: Y) is 0.
-	 * Because we are handling double values here, we want to round
-	 * final Y speed to avoid strange behaviours.
-	 * When Y speed is close to 0 we calculate final direction
-	 * based on final X speed only
-	 */
-	if (std::abs(finalSpeedY) < 0.00001) {
-		finalDirection = finalSpeedX >= 0.0 ? 0.0 : PI;
-	} else {
-		double tangent = finalSpeedY / finalSpeedX;
-		finalDirection = atan(tangent);
-	}
-	setDirection(finalDirection);
+double Model::getSpeedY() const {
+	return speedY;
 }
 
-double Model::getDirection() const {
-	return direction;
-};
-
-void Model::setDirection(double direction) {
-	while (direction > 2 * PI) {
-		direction -= 2 * PI;
-	}
-
-	while (direction < 0) {
-		direction += 2 * PI;
-	}
-
-	Model::direction = direction;
+void Model::setSpeedY(double speedY) {
+	Model::speedY = speedY;
 };

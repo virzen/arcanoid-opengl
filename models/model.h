@@ -58,15 +58,13 @@ public:
 
 	void loadModel(const char* filename);
 
-	double getSpeed() const;
+	double getSpeedX() const;
 
-	void setSpeed(double speed);
+	void setSpeedX(double speedX);
 
-	void accelerate(double acceleration, double direction);
+	double getSpeedY() const;
 
-	double getDirection() const;
-
-	void setDirection(double direction);
+	void setSpeedY(double speedY);
 
 
 private:
@@ -94,15 +92,8 @@ private:
 	float maxX = 0.0f;
 	float minY = 0.0f;
 	float maxY = 0.0f;
-	/**
-	 * Model's speed in units per second.
-	 */
-	double speed = 0.0f;
-	/**
-	 * Direction in radians, counter clockwise.
-	 * Should never be bigger than 2PI and lower than 0.
-	 */
-	double direction = 0.0f;
+	double speedX = 0.0f;
+	double speedY = 0.0f;
 };
 
 

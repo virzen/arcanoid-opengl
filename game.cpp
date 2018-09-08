@@ -25,8 +25,6 @@ static float cameraRotation = 0;
 
 static const int BRICKS_COUNT = 5;
 
-static glm::vec2 ballCoordsModifiers = glm::vec2(1.0f);
-
 Game* Game::instance = nullptr;
 
 Game* Game::get() {
@@ -100,8 +98,8 @@ void Game::init() {
 	paddle = new Paddle();
 
 	ball = new Ball();
-	ball->setSpeed(BALL_SPEED);
-	ball->setDirection(PI / 4);
+	ball->setSpeedX(BALL_SPEED);
+	ball->setSpeedY(BALL_SPEED);
 
 	// Instantiate and place the bricks
 	for (int i = 0; i < BRICKS_COUNT; i++) {
@@ -202,28 +200,32 @@ void Game::resetTimer() {
 
 void Game::recalculatePaddle() {
 	//Accelerate the paddle
-	paddle->accelerate(padX * PAD_ACCELERATION * time, 0.0f);
+	paddle->setSpeedX(paddle->getSpeedX() + padX * PAD_ACCELERATION * time);
 
 	//Keep pad maximum speed
-	paddle->setSpeed(std::min(paddle->getSpeed(), PAD_MAX_SPEED));
+	paddle->setSpeedX(std::min(paddle->getSpeedX(), PAD_MAX_SPEED));
 
 	//Update paddle's position according to it's speed
-	paddle->translate(glm::vec3(cos(paddle->getDirection()) * paddle->getSpeed() * time, 0.0f, 0.0f));
+	paddle->translate(glm::vec3(paddle->getSpeedX() * time, 0.0f, 0.0f));
 
 	//Keep paddle between side walls
 	auto paddleBoundingBox = paddle->getBoundingBox();
 	if (paddleBoundingBox->getMaxX() > 10.0f) {
-		paddle->setSpeed(0.0f);
+		paddle->setSpeedX(0.0f);
 		paddle->translate(glm::vec3(10.0f - paddleBoundingBox->getMaxX(), 0.0f, 0.0f));
 	} else if (paddleBoundingBox->getMinX() < -10.0f) {
-		paddle->setSpeed(0.0f);
+		paddle->setSpeedX(0.0f);
 		paddle->translate(glm::vec3(-10.0f - paddleBoundingBox->getMinX(), 0.0f, 0.0f));
 	}
 
 	//Apply regression to paddle's speed
-	double paddleRegression = std::max(paddle->getSpeed() * PAD_REGRESSION * time, PAD_MIN_REGRESSION); //Compute actual regression
-	double paddleSpeedDecrease = std::min(paddleRegression, paddle->getSpeed()); //Avoid accelerating due to regression
-	paddle->accelerate(paddleSpeedDecrease, paddle->getDirection() + PI); //Decrease the speed
+	double paddleSpeedX = paddle->getSpeedX();
+	int speedSign = paddleSpeedX > 0 ? 1 : -1;
+	paddleSpeedX = std::abs(paddleSpeedX); //Use absolute value to avoid checking for negative values
+	double paddleRegression = std::max(paddleSpeedX * PAD_REGRESSION * time, PAD_MIN_REGRESSION); //Compute actual regression
+	double paddleSpeedDecrease = std::min(paddleRegression, paddleSpeedX); //Avoid accelerating due to regression
+	paddleSpeedX = paddleSpeedX - paddleSpeedDecrease; //Decrease the speed
+	paddle->setSpeedX(paddleSpeedX * speedSign); //Set the speed with the original sign
 }
 
 void Game::recalculate() {
@@ -288,7 +290,7 @@ void Game::recalculate() {
 		}
 	}
 
-	ball->translate(glm::vec3(cos(ball->getDirection()) * ball->getSpeed() * time, sin(ball->getDirection()) * ball->getSpeed() * time, 0.0f));
+	ball->translate(glm::vec3(ball->getSpeedX() * time, ball->getSpeedY() * time, 0.0f));
 }
 
 void Game::draw() {
