@@ -6,6 +6,7 @@
 #include <vector>
 #include "model.h"
 #include "../utils/obj_loader.h"
+#include "../constants.h"
 
 const glm::mat4 &Model::getMatrix() const {
 	return matrix;
@@ -120,3 +121,19 @@ float* Model::getNormals() const {
 void Model::setNormals(float* normals) {
 	Model::normals = normals;
 }
+
+double Model::getSpeedX() const {
+	return speedX;
+}
+
+void Model::setSpeedX(double speedX) {
+	Model::speedX = speedX;
+}
+
+double Model::getSpeedY() const {
+	return speedY;
+}
+
+void Model::setSpeedY(double speedY) {
+	Model::speedY = speedY;
+};

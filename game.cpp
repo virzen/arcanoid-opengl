@@ -21,12 +21,9 @@
 #include <algorithm>
 
 static float padX = 0;
-static float padZ = 0;
 static float cameraRotation = 0;
 
 static const int BRICKS_COUNT = 5;
-
-static glm::vec2 ballCoordsModifiers = glm::vec2(1.0f);
 
 Game* Game::instance = nullptr;
 
@@ -53,8 +50,6 @@ void Game::init() {
 
 	//Create a 500 by 500 window and OpenGL context
 	glWindow = glfwCreateWindow(500, 500, "Arkanoid", nullptr, nullptr);
-	//Initialize the aspect according to window's dimensions
-	windowAspect = 1;
 
 	//Close program if window could not be created
 	if (!glWindow) {
@@ -64,6 +59,10 @@ void Game::init() {
 
 	//Make window active
 	glfwMakeContextCurrent(glWindow);
+	//Maximize the window
+	glfwMaximizeWindow(glWindow);
+	//Initialize the aspect according to window's dimensions
+	windowAspect = 1;
 	//Wait for screen synchronization signal before swapping buffers (VSync)
 	glfwSwapInterval(1);
 
@@ -99,6 +98,8 @@ void Game::init() {
 	paddle = new Paddle();
 
 	ball = new Ball();
+	ball->setSpeedX(BALL_SPEED);
+	ball->setSpeedY(BALL_SPEED);
 
 	// Instantiate and place the bricks
 	for (int i = 0; i < BRICKS_COUNT; i++) {
@@ -170,24 +171,16 @@ void Game::handle_key(GLFWwindow* window, int key, int scancode, int action, int
 			padX = -1;
 		} else if (key == GLFW_KEY_RIGHT) {
 			padX = 1;
-		} else if (key == GLFW_KEY_UP) {
-			padZ = -1;
-		} else if (key == GLFW_KEY_DOWN) {
-			padZ = 1;
 		} else if (key == GLFW_KEY_A) {
 			cameraRotation = -1;
 		} else if (key == GLFW_KEY_D) {
 			cameraRotation = 1;
 		}
 	} else if (action == GLFW_RELEASE) {
-		if (key == GLFW_KEY_LEFT) {
+		if (key == GLFW_KEY_LEFT && padX == -1) {
 			padX = 0;
-		} else if (key == GLFW_KEY_RIGHT) {
+		} else if (key == GLFW_KEY_RIGHT && padX == 1) {
 			padX = 0;
-		} else if (key == GLFW_KEY_UP) {
-			padZ = 0;
-		} else if (key == GLFW_KEY_DOWN) {
-			padZ = 0;
 		} else if (key == GLFW_KEY_A || key == GLFW_KEY_D) {
 			cameraRotation = 0;
 		}
@@ -205,6 +198,36 @@ void Game::resetTimer() {
 	//printf("\rFPS: %f", 1 / time);
 }
 
+void Game::recalculatePaddle() {
+	//Accelerate the paddle
+	paddle->setSpeedX(paddle->getSpeedX() + padX * PAD_ACCELERATION * time);
+
+	//Keep pad maximum speed
+	paddle->setSpeedX(std::min(paddle->getSpeedX(), PAD_MAX_SPEED));
+
+	//Update paddle's position according to it's speed
+	paddle->translate(glm::vec3(paddle->getSpeedX() * time, 0.0f, 0.0f));
+
+	//Keep paddle between side walls
+	auto paddleBoundingBox = paddle->getBoundingBox();
+	if (paddleBoundingBox->getMaxX() > 10.0f) {
+		paddle->setSpeedX(0.0f);
+		paddle->translate(glm::vec3(10.0f - paddleBoundingBox->getMaxX(), 0.0f, 0.0f));
+	} else if (paddleBoundingBox->getMinX() < -10.0f) {
+		paddle->setSpeedX(0.0f);
+		paddle->translate(glm::vec3(-10.0f - paddleBoundingBox->getMinX(), 0.0f, 0.0f));
+	}
+
+	//Apply regression to paddle's speed
+	double paddleSpeedX = paddle->getSpeedX();
+	int speedSign = paddleSpeedX > 0 ? 1 : -1;
+	paddleSpeedX = std::abs(paddleSpeedX); //Use absolute value to avoid checking for negative values
+	double paddleRegression = std::max(paddleSpeedX * PAD_REGRESSION * time, PAD_MIN_REGRESSION); //Compute actual regression
+	double paddleSpeedDecrease = std::min(paddleRegression, paddleSpeedX); //Avoid accelerating due to regression
+	paddleSpeedX = paddleSpeedX - paddleSpeedDecrease; //Decrease the speed
+	paddle->setSpeedX(paddleSpeedX * speedSign); //Set the speed with the original sign
+}
+
 void Game::recalculate() {
 	//Compute perspective matrix
 	perspectiveMatrix = glm::perspective(50 * PI / 180, windowAspect, 1.0f, 50.0f);
@@ -219,10 +242,7 @@ void Game::recalculate() {
 			glm::vec3(0.0f, 1.0f, 0.0f)
 	);
 
-	//Recalculate paddle position
-	glm::mat4 padMatrix = paddle->getMatrix();
-	padMatrix = glm::translate(padMatrix, glm::vec3(PAD_SPEED * time * padX, 0.0f, PAD_SPEED * time * padZ));
-	paddle->setMatrix(padMatrix);
+	recalculatePaddle();
 
 	// Recalculate ball position
 	glm::mat4 ballMatrix = ball->getMatrix();
@@ -255,7 +275,7 @@ void Game::recalculate() {
 	}
 
 	for (Model* hitObject : hitObjects) {
-		bounce(ball, hitObject, &ballCoordsModifiers);
+		bounce(ball, hitObject);
 	}
 
 	for (Brick* destroyedBrick : destroyedBricks) {
@@ -270,7 +290,7 @@ void Game::recalculate() {
 		}
 	}
 
-	ball->translate(glm::vec3(BALL_SPEED * time * ballCoordsModifiers.x, BALL_SPEED * time * ballCoordsModifiers.y, 0.0f));
+	ball->translate(glm::vec3(ball->getSpeedX() * time, ball->getSpeedY() * time, 0.0f));
 }
 
 void Game::draw() {

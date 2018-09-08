@@ -58,6 +58,15 @@ public:
 
 	void loadModel(const char* filename);
 
+	double getSpeedX() const;
+
+	void setSpeedX(double speedX);
+
+	double getSpeedY() const;
+
+	void setSpeedY(double speedY);
+
+
 private:
 	/**
 	 * A number of vertices shared among all instances of this class.
@@ -83,6 +92,8 @@ private:
 	float maxX = 0.0f;
 	float minY = 0.0f;
 	float maxY = 0.0f;
+	double speedX = 0.0f;
+	double speedY = 0.0f;
 };
 
 

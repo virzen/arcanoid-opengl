@@ -18,5 +18,4 @@ public:
 	Paddle();
 };
 
-
 #endif //OPENGL_ARCANOID_PAD_H

@@ -6,5 +6,3 @@
 Paddle::Paddle() {
 	loadModel("./models/paddle/paddle.obj");
 }
-
-
