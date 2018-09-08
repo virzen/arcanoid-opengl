@@ -16,14 +16,6 @@ public:
 	 * Paddle's default constructor.
 	 */
 	Paddle();
-
-	double getSpeed() const;
-
-	void setSpeed(double speed);
-
-private:
-	double speed = 0.0f;
 };
-
 
 #endif //OPENGL_ARCANOID_PAD_H

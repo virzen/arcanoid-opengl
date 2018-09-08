@@ -120,3 +120,11 @@ float* Model::getNormals() const {
 void Model::setNormals(float* normals) {
 	Model::normals = normals;
 }
+
+double Model::getSpeed() const {
+	return speed;
+}
+
+void Model::setSpeed(double speed) {
+	Model::speed = speed;
+}
