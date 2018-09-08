@@ -202,7 +202,7 @@ void Game::resetTimer() {
 
 void Game::recalculatePaddle() {
 	//Accelerate the paddle
-	paddle->addSpeed(padX * PAD_ACCELERATION * time, 0.0f);
+	paddle->accelerate(padX * PAD_ACCELERATION * time, 0.0f);
 
 	//Keep pad maximum speed
 	paddle->setSpeed(std::min(paddle->getSpeed(), PAD_MAX_SPEED));
@@ -223,7 +223,7 @@ void Game::recalculatePaddle() {
 	//Apply regression to paddle's speed
 	double paddleRegression = std::max(paddle->getSpeed() * PAD_REGRESSION * time, PAD_MIN_REGRESSION); //Compute actual regression
 	double paddleSpeedDecrease = std::min(paddleRegression, paddle->getSpeed()); //Avoid accelerating due to regression
-	paddle->addSpeed(paddleSpeedDecrease, paddle->getDirection() + PI); //Decrease the speed
+	paddle->accelerate(paddleSpeedDecrease, paddle->getDirection() + PI); //Decrease the speed
 }
 
 void Game::recalculate() {

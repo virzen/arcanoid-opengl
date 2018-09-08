@@ -134,16 +134,16 @@ void Model::setSpeed(double speed) {
 	Model::speed = std::abs(speed);
 }
 
-void Model::addSpeed(double speed, double direction) {
+void Model::accelerate(double acceleration, double direction) {
 	// Calculate speeds on both axes
-	double speedX = speed * cos(direction);
-	double speedY = speed * sin(direction);
+	double accelerationX = acceleration * cos(direction);
+	double accelerationY = acceleration * sin(direction);
 
 	double currentSpeedX = Model::speed * cos(Model::direction);
 	double currentSpeedY = Model::speed * sin(Model::direction);
 
-	double finalSpeedX = speedX + currentSpeedX;
-	double finalSpeedY = speedY + currentSpeedY;
+	double finalSpeedX = accelerationX + currentSpeedX;
+	double finalSpeedY = accelerationY + currentSpeedY;
 
 	// Calculate and set resultant speed
 	double finalSpeed = sqrt(pow(finalSpeedX, 2.0f) + pow(finalSpeedY, 2.0f));

@@ -62,7 +62,7 @@ public:
 
 	void setSpeed(double speed);
 
-	void addSpeed(double speed, double direction);
+	void accelerate(double acceleration, double direction);
 
 	double getDirection() const;
 
