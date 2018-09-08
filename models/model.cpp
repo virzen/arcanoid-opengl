@@ -6,6 +6,7 @@
 #include <vector>
 #include "model.h"
 #include "../utils/obj_loader.h"
+#include "../constants.h"
 
 const glm::mat4 &Model::getMatrix() const {
 	return matrix;
@@ -128,3 +129,19 @@ double Model::getSpeed() const {
 void Model::setSpeed(double speed) {
 	Model::speed = speed;
 }
+
+double Model::getDirection() const {
+	return direction;
+};
+
+void Model::setDirection(double direction) {
+	while (direction > 2 * PI) {
+		direction -= 2 * PI;
+	}
+
+	while (direction < 0) {
+		direction += 2 * PI;
+	}
+
+	Model::direction = direction;
+};

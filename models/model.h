@@ -62,6 +62,10 @@ public:
 
 	void setSpeed(double speed);
 
+	double getDirection() const;
+
+	void setDirection(double direction);
+
 
 private:
 	/**
@@ -92,6 +96,11 @@ private:
 	 * Model's speed in units per second.
 	 */
 	double speed = 0.0f;
+	/**
+	 * Direction in radians, counter clockwise.
+	 * Should never be bigger than 2PI and lower than 0.
+	 */
+	double direction = 0.0f;
 };
 
 
