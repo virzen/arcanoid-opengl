@@ -8,7 +8,7 @@
 #include "../models/model.h"
 #include "../models/ball/ball.h"
 
-void bounce(Ball* pBall, Model* model, glm::vec2* ballCoordsModifiers);
+void bounce(Ball* pBall, Model* model);
 
 
 #endif //OPENGL_ARCANOID_BOUNCE_H

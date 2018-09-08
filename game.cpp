@@ -100,6 +100,8 @@ void Game::init() {
 	paddle = new Paddle();
 
 	ball = new Ball();
+	ball->setSpeed(BALL_SPEED);
+	ball->setDirection(PI / 4);
 
 	// Instantiate and place the bricks
 	for (int i = 0; i < BRICKS_COUNT; i++) {
@@ -271,7 +273,7 @@ void Game::recalculate() {
 	}
 
 	for (Model* hitObject : hitObjects) {
-		bounce(ball, hitObject, &ballCoordsModifiers);
+		bounce(ball, hitObject);
 	}
 
 	for (Brick* destroyedBrick : destroyedBricks) {
@@ -286,7 +288,7 @@ void Game::recalculate() {
 		}
 	}
 
-	ball->translate(glm::vec3(BALL_SPEED * time * ballCoordsModifiers.x, BALL_SPEED * time * ballCoordsModifiers.y, 0.0f));
+	ball->translate(glm::vec3(cos(ball->getDirection()) * ball->getSpeed() * time, sin(ball->getDirection()) * ball->getSpeed() * time, 0.0f));
 }
 
 void Game::draw() {

@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <string>
 #include "bounce.h"
+#include "../constants.h"
 
 enum Side {
 	top = 0, right, bottom, left
@@ -82,16 +83,32 @@ void reposition(Ball* ball, Model* object, Side side) {
 }
 
 // TODO: move to Game?
-void bounce(Ball* ball, Model* object, glm::vec2* ballCoordsModifiers) {
+void bounce(Ball* ball, Model* object) {
 	Side side = calculateSide(ball, object);
 
 	printf("Collision from %s side\n", enumNames[side].c_str());
 	reposition(ball, object, side);
 
+	const double ballDirection = ball->getDirection();
+	const double normalizedBallDirection = ballDirection > PI ? ballDirection - PI : ballDirection; // In quarters I and II
+	const unsigned int quarter = (ballDirection / PI / 2) + 1;
+
 	if (side == top || side == bottom) {
-		ballCoordsModifiers->y = -1 * ballCoordsModifiers->y;
+		if (quarter % 2 == 1) { // I and III quarters
+			double arc = PI / 2 - normalizedBallDirection;
+			ball->setDirection(ballDirection - 2 * arc);
+		} else { // II and IV quarters
+			double arc = normalizedBallDirection - PI / 2;
+			ball->setDirection(ballDirection + 2 * arc);
+		}
 	} else {
-		ballCoordsModifiers->x = -1 * ballCoordsModifiers->x;
+		if (quarter % 2 == 1) { // I and III quarters
+			double arc = PI / 2 - normalizedBallDirection;
+			ball->setDirection(ballDirection + 2 * arc);
+		} else { // II and IV quarters
+			double arc = normalizedBallDirection - PI / 2;
+			ball->setDirection(ballDirection - 2 * arc);
+		}
 	}
 
 	printf("\n");
