@@ -17,15 +17,13 @@ out vec4 normalVector;
 out vec4 viewerVector;
 
 void main(void) {
-    vec4 lightPosition = vec4(0, 0, -6, 1);
+    vec4 lightPosition = vec4(0, 0, -6, 1); // Light position in world space
 
    	gl_Position = perspectiveMatrix * viewMatrix * modelMatrix * vertexCoordinates;
     outputColor = vertexColor;
     lightVector = normalize(viewMatrix * lightPosition - viewMatrix * modelMatrix * vertexCoordinates);
     normalVector = normalize(viewMatrix * modelMatrix * vertexNormal);
 	viewerVector = normalize(vec4(0, 0, 0, 1) - viewMatrix * modelMatrix * vertexCoordinates);
-
-
 }
 
 
