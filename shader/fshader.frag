@@ -19,7 +19,7 @@ void main(void) {
     vec4 ambientColor = ambientMaterialColor * ambientLightColor;
 
     vec4 diffuseMaterialColor = outputColor;
-    vec4 diffuseLightColor = vec4(0, 0, 0, 1);
+    vec4 diffuseLightColor = vec4(1, 1, 1, 1);
     float nl = max(dot(normalizedNormalVector, normalizedLightVector), 0);
     vec4 diffuseColor = diffuseMaterialColor * diffuseLightColor * vec4(nl, nl, nl, 1);
 
