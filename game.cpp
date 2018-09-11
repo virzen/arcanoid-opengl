@@ -80,7 +80,7 @@ void Game::init() {
 	shader->use();
 
 	//Clear screen with black
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	//Turn on Z-buffer usage
 	glEnable(GL_DEPTH_TEST);
@@ -314,27 +314,27 @@ void Game::draw() {
 
 void Game::drawModel(Model* model) {
 	//Pass all matrices to the shader
-	glUniformMatrix4fv(shader->getUniformLocation("P"), 1, GL_FALSE, glm::value_ptr(perspectiveMatrix));
-	glUniformMatrix4fv(shader->getUniformLocation("V"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-	glUniformMatrix4fv(shader->getUniformLocation("M"), 1, GL_FALSE, glm::value_ptr(model->getMatrix()));
+	glUniformMatrix4fv(shader->getUniformLocation("perspectiveMatrix"), 1, GL_FALSE, glm::value_ptr(perspectiveMatrix));
+	glUniformMatrix4fv(shader->getUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+	glUniformMatrix4fv(shader->getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(model->getMatrix()));
 
 	//Enable attributes
-	glEnableVertexAttribArray(shader->getAttribLocation("vertex"));
-	glEnableVertexAttribArray(shader->getAttribLocation("color"));
-	glEnableVertexAttribArray(shader->getAttribLocation("normal"));
+	glEnableVertexAttribArray(shader->getAttribLocation("vertexCoordinates"));
+	glEnableVertexAttribArray(shader->getAttribLocation("vertexColor"));
+	glEnableVertexAttribArray(shader->getAttribLocation("vertexNormal"));
 
 	//Pass attributes to the shader
-	glVertexAttribPointer(shader->getAttribLocation("vertex"), 4, GL_FLOAT, GL_FALSE, 0, model->getVertices());
-	glVertexAttribPointer(shader->getAttribLocation("color"), 4, GL_FLOAT, GL_FALSE, 0, model->getColors());
-	glVertexAttribPointer(shader->getAttribLocation("normal"), 4, GL_FLOAT, GL_FALSE, 0, model->getNormals());
+	glVertexAttribPointer(shader->getAttribLocation("vertexCoordinates"), 4, GL_FLOAT, GL_FALSE, 0, model->getVertices());
+	glVertexAttribPointer(shader->getAttribLocation("vertexColor"), 4, GL_FLOAT, GL_FALSE, 0, model->getColors());
+	glVertexAttribPointer(shader->getAttribLocation("vertexNormal"), 4, GL_FLOAT, GL_FALSE, 0, model->getNormals());
 
 	//Draw the object
 	glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
 
 	//Clean up
-	glDisableVertexAttribArray(shader->getAttribLocation("vertex"));
-	glDisableVertexAttribArray(shader->getAttribLocation("color"));
-	glDisableVertexAttribArray(shader->getAttribLocation("normal"));
+	glDisableVertexAttribArray(shader->getAttribLocation("vertexCoordinates"));
+	glDisableVertexAttribArray(shader->getAttribLocation("vertexColor"));
+	glDisableVertexAttribArray(shader->getAttribLocation("vertexNormal"));
 }
 
 Game::~Game() {

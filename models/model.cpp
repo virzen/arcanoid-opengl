@@ -47,7 +47,7 @@ void Model::loadModel(const char* filename) {
 
 	std::vector<glm::vec3> objVertices;
 	std::vector<glm::vec2> objUvs;
-	std::vector<glm::vec3> objNormals; // Won't be used at the moment.
+	std::vector<glm::vec3> objNormals;
 
 	loadOBJ(filename, objVertices, objUvs, objNormals);
 
@@ -62,6 +62,7 @@ void Model::loadModel(const char* filename) {
 
 	for (int i = 0, vertexIndex = 0; i < objVertices.size(); i++) {
 		auto vertex = objVertices[i];
+		auto normal = objNormals[i];
 		vertices[vertexIndex] = vertex.x;
 		vertices[vertexIndex + 1] = vertex.y;
 		vertices[vertexIndex + 2] = vertex.z;
@@ -70,6 +71,10 @@ void Model::loadModel(const char* filename) {
 		colors[vertexIndex + 1] = (float) i / getVertexCount();
 		colors[vertexIndex + 2] = (float) i / getVertexCount();
 		colors[vertexIndex + 3] = 1.0f;
+		normals[vertexIndex] = normal.x;
+		normals[vertexIndex + 1] = normal.y;
+		normals[vertexIndex + 2] = normal.z;
+		normals[vertexIndex + 3] = 0.0f;
 		vertexIndex += 4;
 
 		if (vertex.x < minX) {
