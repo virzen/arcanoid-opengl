@@ -74,7 +74,7 @@ void Model::loadModel(const char* filename) {
 		normals[vertexIndex] = normal.x;
 		normals[vertexIndex + 1] = normal.y;
 		normals[vertexIndex + 2] = normal.z;
-		normals[vertexIndex + 3] = 1.0f;
+		normals[vertexIndex + 3] = 0.0f;
 		vertexIndex += 4;
 
 		if (vertex.x < minX) {
