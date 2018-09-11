@@ -15,7 +15,7 @@ void main(void) {
 	vec4 normalizedViewerVector = normalize(viewerVector);
 
     vec4 ambientMaterialColor = outputColor;
-    vec4 ambientLightColor = vec4(0.07, 0.07, 0.07, 0);
+    vec4 ambientLightColor = vec4(0.12, 0.12, 0.12, 1);
     vec4 ambientColor = ambientMaterialColor * ambientLightColor;
 
     vec4 diffuseMaterialColor = outputColor;
