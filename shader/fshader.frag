@@ -25,7 +25,7 @@ void main(void) {
 
     vec4 specularMaterialColor = 2 * outputColor;
 	vec4 specularLightColor = vec4(1, 1, 1, 1);
-	vec4 reflectionVector = reflect(normalizedLightVector, normalizedNormalVector);
+	vec4 reflectionVector = reflect(-normalizedLightVector, normalizedNormalVector);
 	float reflectionFactor = pow(max(0, dot(reflectionVector, normalizedViewerVector)), lightFocus);
 	vec4 specularColor = specularMaterialColor * specularLightColor * reflectionFactor;
 
