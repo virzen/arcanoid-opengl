@@ -1,33 +1,31 @@
 #version 330
 
-//Zmienne jednorodne
-uniform mat4 P;
-uniform mat4 V;
-uniform mat4 M;
+// Uniform variables
+uniform mat4 perspectiveMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
 
+// Attributes
+in vec4 vertexCoordinates; // Vertex coordinates in model space
+in vec4 vertexColor;  // Vertex color
+in vec4 vertexNormal; // Vertex normal vector in model space
 
-//Atrybuty
-in vec4 vertex; //wspolrzedne wierzcholka w przestrzeni modelu
-in vec4 color;  //kolor wierzcholka (na razie ignorowany)
-in vec4 normal; //wektor normalny w wierzcholku w przestrzeni modelu
-
-
-//Zmienne interpolowane
-out vec4 iC; //Kolor wyliczony w vertex shaderze
-out vec4 l;
-out vec4 n;
-out vec4 v;
+// Interpolated output variables
+out vec4 outputColor;
+out vec4 lightVector;
+out vec4 normalVector;
+out vec4 viewerVector;
 
 void main(void) {
-    vec4 lp=vec4(0,0,-6,1);
+    vec4 lightPosition = vec4(0, 0, -6, 1);
 
-    l=normalize(V*lp-V*M*vertex);
-    n=normalize(V*M*normal); 
-	v=normalize(vec4(0,0,0,1) - V*M*vertex);
+   	gl_Position = perspectiveMatrix * viewMatrix * modelMatrix * vertexCoordinates;
+    outputColor = vertexColor;
+    lightVector = normalize(viewMatrix * lightPosition - viewMatrix * modelMatrix * vertexCoordinates);
+    normalVector = normalize(viewMatrix * modelMatrix * vertexNormal);
+	viewerVector = normalize(vec4(0, 0, 0, 1) - viewMatrix * modelMatrix * vertexCoordinates);
 
-    iC=color;
 
-	gl_Position=P*V*M*vertex;
 }
 
 
