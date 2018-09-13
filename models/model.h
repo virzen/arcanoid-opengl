@@ -26,13 +26,17 @@ public:
 
 	void setVertices(float* vertices);
 
-	float* getColors() const;
+	float* getUvs() const;
 
-	void setColors(float* colors);
+	void setUvs(float* uvs);
 
 	float* getNormals() const;
 
 	void setNormals(float* normals);
+
+	float* getColors() const;
+
+	void setColors(float* colors);
 
 	/**
 	 * Gets model's matrix.
@@ -77,13 +81,17 @@ private:
 	 */
 	float* vertices;
 	/**
-	 * Triangle's colors shared among all instances of this class.
+	 * Triangle's texture coordinates.
 	 */
-	float* colors;
+	float* uvs;
 	/**
 	 * Triangle's normal vectors shared among all instances of this class.
 	 */
 	float* normals;
+	/**
+	 * Triangle's colors shared among all instances of this class.
+	 */
+	float* colors;
 	/**
 	 * A 4x4 matrix representing this model's position.
 	 */

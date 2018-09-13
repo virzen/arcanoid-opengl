@@ -52,29 +52,34 @@ void Model::loadModel(const char* filename) {
 	loadOBJ(filename, objVertices, objUvs, objNormals);
 
 	setVertexCount(static_cast<unsigned int>(objVertices.size()));
-	auto* vertices = (float*) malloc(sizeof(float) * getVertexCount() * 4);
+	auto* vertices = (float*) malloc(sizeof(float) * objVertices.size() * 4);
 	setVertices(vertices);
-	auto* colors = (float*) malloc(sizeof(float) * getVertexCount() * 4);
-	setColors(colors);
-	auto* normals = (float*) malloc(sizeof(float) * getVertexCount() * 4);
+	auto* uvs = (float*) malloc(sizeof(float) * objUvs.size() * 2);
+	setUvs(uvs);
+	auto* normals = (float*) malloc(sizeof(float) * objNormals.size() * 4);
 	setNormals(normals);
-
+	auto* colors = (float*) malloc(sizeof(float) * objVertices.size() * 4);
+	setColors(colors);
 
 	for (int i = 0, vertexIndex = 0; i < objVertices.size(); i++) {
 		auto vertex = objVertices[i];
 		auto normal = objNormals[i];
+
 		vertices[vertexIndex] = vertex.x;
 		vertices[vertexIndex + 1] = vertex.y;
 		vertices[vertexIndex + 2] = vertex.z;
 		vertices[vertexIndex + 3] = 1.0f;
-		colors[vertexIndex] = 1.0f;
-		colors[vertexIndex + 1] = (float) i / getVertexCount();
-		colors[vertexIndex + 2] = (float) i / getVertexCount();
-		colors[vertexIndex + 3] = 1.0f;
+
 		normals[vertexIndex] = normal.x;
 		normals[vertexIndex + 1] = normal.y;
 		normals[vertexIndex + 2] = normal.z;
 		normals[vertexIndex + 3] = 0.0f;
+
+		colors[vertexIndex] = 1.0f;
+		colors[vertexIndex + 1] = (float) i / getVertexCount();
+		colors[vertexIndex + 2] = (float) i / getVertexCount();
+		colors[vertexIndex + 3] = 1.0f;
+
 		vertexIndex += 4;
 
 		if (vertex.x < minX) {
@@ -92,6 +97,15 @@ void Model::loadModel(const char* filename) {
 		if (vertex.y > maxY) {
 			maxY = vertex.y;
 		}
+	}
+
+	for (int i = 0, uvIndex = 0; i < objUvs.size(); ++i) {
+		auto uv = objUvs[i];
+
+		uvs[uvIndex] = uv.x;
+		uvs[uvIndex + 1] = uv.y;
+
+		uvIndex += 2;
 	}
 }
 
@@ -111,12 +125,12 @@ void Model::setVertices(float* vertices) {
 	Model::vertices = vertices;
 }
 
-float* Model::getColors() const {
-	return colors;
+float* Model::getUvs() const {
+	return uvs;
 }
 
-void Model::setColors(float* colors) {
-	Model::colors = colors;
+void Model::setUvs(float* uvs) {
+	Model::uvs = uvs;
 }
 
 float* Model::getNormals() const {
@@ -125,6 +139,14 @@ float* Model::getNormals() const {
 
 void Model::setNormals(float* normals) {
 	Model::normals = normals;
+}
+
+float* Model::getColors() const {
+	return colors;
+}
+
+void Model::setColors(float* colors) {
+	Model::colors = colors;
 }
 
 double Model::getSpeedX() const {
@@ -141,4 +163,4 @@ double Model::getSpeedY() const {
 
 void Model::setSpeedY(double speedY) {
 	Model::speedY = speedY;
-};
+}
