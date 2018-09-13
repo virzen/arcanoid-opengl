@@ -25,5 +25,3 @@ void main(void) {
     normalVector = normalize(viewMatrix * modelMatrix * vertexNormal);
 	viewerVector = normalize(vec4(0, 0, 0, 1) - viewMatrix * modelMatrix * vertexCoordinates);
 }
-
-

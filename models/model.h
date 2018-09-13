@@ -8,6 +8,8 @@
 #include <glm/detail/type_mat4x4.hpp>
 #include "boundingBox/boundingBox.h"
 
+class Shader;
+
 /**
  * This is an abstract class representing a 3D model.
  *
@@ -70,6 +72,9 @@ public:
 
 	void setSpeedY(double speedY);
 
+	Shader* getShader() const;
+
+	void setShader(Shader* shader);
 
 private:
 	/**
@@ -102,6 +107,8 @@ private:
 	float maxY = 0.0f;
 	double speedX = 0.0f;
 	double speedY = 0.0f;
+
+	Shader* shader;
 };
 
 

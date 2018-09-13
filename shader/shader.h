@@ -5,11 +5,16 @@
 
 
 #include <GL/glew.h>
+#include "../models/model.h"
 
 class Shader {
 
 public:
 	Shader(const char* vertexShaderFile, const char* geometryShaderFile, const char* fragmentShaderFile);
+
+	virtual void draw(Model* model, glm::mat4 perspectiveMatrix, glm::mat4 viewMatrix) {
+		use();
+	};
 
 	/**
 	 * Turns this shader on.

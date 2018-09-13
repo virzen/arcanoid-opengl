@@ -164,3 +164,11 @@ double Model::getSpeedY() const {
 void Model::setSpeedY(double speedY) {
 	Model::speedY = speedY;
 }
+
+Shader* Model::getShader() const {
+	return shader;
+}
+
+void Model::setShader(Shader* shader) {
+	Model::shader = shader;
+}
