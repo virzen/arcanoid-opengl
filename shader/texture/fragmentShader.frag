@@ -1,21 +1,26 @@
 #version 330
 
+// Uniform variables
+uniform sampler2D textureMap;
+
 // Interpolated input variables
-in vec4 outputColor;
 in vec4 lightVector;
 in vec4 normalVector;
 in vec4 viewerVector;
+in vec2 textureCoordinate;
 
 out vec4 pixelColor; // Fragment shader output variable
 
 void main(void) {
     int lightFocus = 10; // Phong exponent
+    vec4 outputColor = texture(textureMap, textureCoordinate);
+
 	vec4 normalizedLightVector = normalize(lightVector);
 	vec4 normalizedNormalVector = normalize(normalVector);
 	vec4 normalizedViewerVector = normalize(viewerVector);
 
     vec4 ambientMaterialColor = outputColor;
-    vec4 ambientLightColor = vec4(0.12, 0.12, 0.12, 1);
+    vec4 ambientLightColor = vec4(0.2, 0.2, 0.2, 1);
     vec4 ambientColor = ambientMaterialColor * ambientLightColor;
 
     vec4 diffuseMaterialColor = outputColor;

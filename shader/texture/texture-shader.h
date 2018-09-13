@@ -8,9 +8,12 @@
 class TextureShader : public Shader {
 
 public:
-	TextureShader();
+	explicit TextureShader(const char* textureFile);
 
 	void draw(Model* model, glm::mat4 perspectiveMatrix, glm::mat4 viewMatrix) override;
+
+private:
+	GLuint texture;
 };
 
 

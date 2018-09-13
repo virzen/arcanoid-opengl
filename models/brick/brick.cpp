@@ -5,5 +5,5 @@
 
 Brick::Brick() {
 	loadModel("./models/brick/brick.obj");
-	setShader(Shaders::colorShader());
+	setShader(Shaders::textureShader());
 }

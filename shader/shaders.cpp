@@ -17,7 +17,7 @@ Shader* Shaders::colorShader() {
 
 Shader* Shaders::textureShader() {
 	if (textureShaderInstance == nullptr) {
-		textureShaderInstance = new TextureShader();
+		textureShaderInstance = new TextureShader("textures/bricks/bricks_diffuse.png");
 	}
 
 	return textureShaderInstance;
