@@ -2,13 +2,13 @@
 
 // Interpolated input variables
 in vec4 outputColor;
-in vec4 lightVector;
+in vec4 lightVectors[2];
 in vec4 normalVector;
 in vec4 viewerVector;
 
 out vec4 pixelColor; // Fragment shader output variable
 
-void main(void) {
+vec4 colorForLight(vec4 lightVector) {
     int lightFocus = 10; // Phong exponent
 	vec4 normalizedLightVector = normalize(lightVector);
 	vec4 normalizedNormalVector = normalize(normalVector);
@@ -29,5 +29,9 @@ void main(void) {
 	float reflectionFactor = pow(max(0, dot(reflectionVector, normalizedViewerVector)), lightFocus);
 	vec4 specularColor = specularMaterialColor * specularLightColor * reflectionFactor;
 
-    pixelColor = ambientColor + diffuseColor + specularColor;
+    return ambientColor + diffuseColor + specularColor;
+}
+
+void main(void) {
+    pixelColor = 0.5 * colorForLight(lightVectors[0]) + 0.5 * colorForLight(lightVectors[1]);
 }
