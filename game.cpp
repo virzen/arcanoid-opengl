@@ -123,6 +123,10 @@ void Game::init() {
 	//Set camera position
 	cameraPosition = glm::vec3(0.0f, 10.0f, 60.0f);
 
+	startNewGame();
+}
+
+void Game::startNewGame() {
 	//Create models
 	paddle = new Paddle();
 
@@ -251,6 +255,16 @@ void Game::recalculate() {
 
 	recalculatePaddle();
 
+
+	// Finish game when ball below paddle
+	auto paddleBoundingBox = paddle->getBoundingBox();
+	auto ballBoundingBox = ball->getBoundingBox();
+
+	if (ballBoundingBox->getMaxY() < paddleBoundingBox->getMinY()) {
+		startNewGame();
+	}
+
+
 	// Recalculate ball position
 	glm::mat4 ballMatrix = ball->getMatrix();
 	std::vector<Model*> hitObjects;
@@ -303,6 +317,9 @@ void Game::recalculate() {
 }
 
 void Game::createBricks() {
+	// Clear bricks from previous game
+	bricks.clear();
+
 	for (int letterIndex = 0; letterIndex < TEXT.size(); letterIndex++) {
 		string letter = TEXT.at(letterIndex);
 
@@ -337,6 +354,10 @@ void Game::createBricks() {
 }
 
 void Game::createWalls() {
+	// clear walls from previous game
+	upperWalls.clear();
+	sideWalls.clear();
+
 	// Instantiate and place walls
 	// Upper wall
 	for (int i = 0; i < UPPER_WALLS_NUMBER; i++) {
