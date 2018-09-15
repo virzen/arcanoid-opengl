@@ -19,11 +19,28 @@
 #include "models/vertical-wall/vertical-wall.h"
 #include <vector>
 #include <algorithm>
+#include <string>
+#include "glm/gtx/string_cast.hpp"
+
+using std::string;
 
 static float padX = 0;
 static float cameraRotation = 0;
 
-static const int BRICKS_COUNT = 5;
+const string A = "1111100111111001";
+const string R = "1111100111101001";
+const string K = "1001101011001010";
+const string N = "1001110110111001";
+const string O = "1111100110011111";
+const string I = "0110011001100110";
+const string D = "1110100110011110";
+
+const float BRICK_SIZE = 2.0f;
+const int LETTER_WIDTH_BLOCKS = 4;
+const int LETTER_HEIGHT_BLOCKS = 4;
+const float LETTER_WIDTH = BRICK_SIZE * LETTER_WIDTH_BLOCKS;
+const float LETTER_HEIGHT = BRICK_SIZE * LETTER_HEIGHT_BLOCKS;
+const float LETTER_SPACING = 1.0f;
 
 Game* Game::instance = nullptr;
 
@@ -281,19 +298,48 @@ void Game::recalculate() {
 }
 
 void Game::createBricks() {
-	// Instantiate and place the bricks
-	for (int i = 0; i < BRICKS_COUNT; i++) {
-		bricks.push_back(new Brick());
-	}
+	std::vector<string> text;
+	text.push_back(A);
+	text.push_back(R);
+	text.push_back(K);
+	text.push_back(A);
+	text.push_back(N);
+	text.push_back(O);
+	text.push_back(I);
+	text.push_back(D);
 
-	glm::mat4 brickMatrix;
-	int brickOffset;
-	for (int i = 0; i < bricks.size(); i++) {
-		brickOffset = i - 2;
+	for (int letterIndex = 0; letterIndex < text.size(); letterIndex++) {
+		string letter = text.at(letterIndex);
 
-		brickMatrix = bricks.at(i)->getMatrix();
-		brickMatrix = glm::translate(brickMatrix, glm::vec3(brickOffset * 4.0f, 6.0f, 0.0f));
-		bricks.at(i)->setMatrix(brickMatrix);
+		float letterOffset = (float) letterIndex - (text.size() / 2.0f) + 0.5f;
+		glm::vec3 letterTranslationVector = glm::vec3((letterOffset * (LETTER_WIDTH + LETTER_SPACING * 2)), 10.0f, 0.0f);
+
+		std::cout << glm::to_string(letterTranslationVector) << std::endl;
+
+		for (int brickIndex = 0; brickIndex < letter.length(); brickIndex++) {
+			int positionX = brickIndex % LETTER_WIDTH_BLOCKS;
+			int positionY = brickIndex / LETTER_HEIGHT_BLOCKS;
+			bool isBrickPresent = letter[brickIndex] == '1';
+
+			if (!isBrickPresent) {
+				continue;
+			}
+
+			Brick* brick = new Brick();
+			glm::mat4 brickMatrix = brick->getMatrix();
+
+			brickMatrix = glm::translate(brickMatrix, letterTranslationVector);
+
+			// what is -1.5f?
+			float xTranslation = -1.5f * BRICK_SIZE +  positionX * BRICK_SIZE; 
+			float yTranslation = 1.5f * BRICK_SIZE - positionY * BRICK_SIZE;
+			glm::vec3 brickTranslationVector = glm::vec3(xTranslation, yTranslation, 0.0f);
+			brickMatrix = glm::translate(brickMatrix, brickTranslationVector);
+
+			brick->setMatrix(brickMatrix);
+
+			bricks.push_back(brick);
+		}
 	}
 }
 
