@@ -139,6 +139,9 @@ private:
 	 */
 	void draw();
 
+
+	void startNewGame();
+
 	/**
 	 * Draws given model on the screen.
 	 *
