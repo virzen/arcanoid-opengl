@@ -101,20 +101,7 @@ void Game::init() {
 	ball->setSpeedX(BALL_SPEED);
 	ball->setSpeedY(BALL_SPEED);
 
-	// Instantiate and place the bricks
-	for (int i = 0; i < BRICKS_COUNT; i++) {
-		bricks.push_back(new Brick());
-	}
-
-	glm::mat4 brickMatrix;
-	int brickOffset;
-	for (int i = 0; i < bricks.size(); i++) {
-		brickOffset = i - 2;
-
-		brickMatrix = bricks.at(i)->getMatrix();
-		brickMatrix = glm::translate(brickMatrix, glm::vec3(brickOffset * 4.0f, 6.0f, 0.0f));
-		bricks.at(i)->setMatrix(brickMatrix);
-	}
+	createBricks();
 
 	// Instantiate and place walls
 	// Upper wall
@@ -291,6 +278,23 @@ void Game::recalculate() {
 	}
 
 	ball->translate(glm::vec3(ball->getSpeedX() * time, ball->getSpeedY() * time, 0.0f));
+}
+
+void Game::createBricks() {
+	// Instantiate and place the bricks
+	for (int i = 0; i < BRICKS_COUNT; i++) {
+		bricks.push_back(new Brick());
+	}
+
+	glm::mat4 brickMatrix;
+	int brickOffset;
+	for (int i = 0; i < bricks.size(); i++) {
+		brickOffset = i - 2;
+
+		brickMatrix = bricks.at(i)->getMatrix();
+		brickMatrix = glm::translate(brickMatrix, glm::vec3(brickOffset * 4.0f, 6.0f, 0.0f));
+		bricks.at(i)->setMatrix(brickMatrix);
+	}
 }
 
 void Game::draw() {

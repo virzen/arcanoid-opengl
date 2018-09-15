@@ -148,6 +148,8 @@ private:
 
 	void recalculatePaddle();
 
+	void createBricks();
+
 	/**
 	 * Recalculates positions of game's models.
 	 */
