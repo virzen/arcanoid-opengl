@@ -35,6 +35,9 @@ const string O = "1111100110011111";
 const string I = "0110011001100110";
 const string D = "1110100110011110";
 
+static const string TEXT_ARR[] = {A, R, K, A, N, O, I, D};
+std::vector<string> TEXT(TEXT_ARR, TEXT_ARR + sizeof(TEXT_ARR) / sizeof(TEXT_ARR[0]) );
+
 const float BRICK_SIZE = 2.0f;
 const int LETTER_WIDTH_BLOCKS = 4;
 const int LETTER_HEIGHT_BLOCKS = 4;
@@ -298,20 +301,10 @@ void Game::recalculate() {
 }
 
 void Game::createBricks() {
-	std::vector<string> text;
-	text.push_back(A);
-	text.push_back(R);
-	text.push_back(K);
-	text.push_back(A);
-	text.push_back(N);
-	text.push_back(O);
-	text.push_back(I);
-	text.push_back(D);
+	for (int letterIndex = 0; letterIndex < TEXT.size(); letterIndex++) {
+		string letter = TEXT.at(letterIndex);
 
-	for (int letterIndex = 0; letterIndex < text.size(); letterIndex++) {
-		string letter = text.at(letterIndex);
-
-		float letterOffset = (float) letterIndex - (text.size() / 2.0f) + 0.5f;
+		float letterOffset = (float) letterIndex - (TEXT.size() / 2.0f) + 0.5f;
 		glm::vec3 letterTranslationVector = glm::vec3((letterOffset * (LETTER_WIDTH + LETTER_SPACING * 2)), 10.0f, 0.0f);
 
 		std::cout << glm::to_string(letterTranslationVector) << std::endl;
