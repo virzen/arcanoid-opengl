@@ -150,6 +150,8 @@ private:
 
 	void createBricks();
 
+	void createWalls();
+
 	/**
 	 * Recalculates positions of game's models.
 	 */

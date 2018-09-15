@@ -125,32 +125,7 @@ void Game::init() {
 
 	createBricks();
 
-	// Instantiate and place walls
-	// Upper wall
-	upperWalls.push_back(new HorizontalWall());
-	upperWalls.push_back(new HorizontalWall());
-	upperWalls.push_back(new HorizontalWall());
-
-	for (int upperWallIndex = 0; upperWallIndex < upperWalls.size(); upperWallIndex++) {
-		HorizontalWall* upperWall = upperWalls.at(upperWallIndex);
-
-		float upperWallOffset = upperWallIndex - floor((upperWalls.size() / 2));
-		float upperWallX = (upperWallOffset * UPPER_WALL_WIDTH);
-
-		upperWall->translate(glm::vec3(upperWallX, 19.0f, 0.0f));
-	}
-
-	// Side walls
-	float wallDistanceFromCenter = (LETTER_WIDTH + LETTER_SPACING * 2) * TEXT.size() / 2 + 1.0f;
-	float leftWallX = -1 * wallDistanceFromCenter;
-	VerticalWall* leftWall = new VerticalWall();
-	leftWall->translate(glm::vec3(leftWallX, 10.0f, 0.0f));
-	sideWalls.push_back(leftWall);
-
-	float rightWallX = wallDistanceFromCenter;
-	VerticalWall* rightWall = new VerticalWall();
-	rightWall->translate(glm::vec3(rightWallX, 10.0f, 0.0f));
-	sideWalls.push_back(rightWall);
+	createWalls();
 }
 
 void Game::run() {
@@ -351,6 +326,36 @@ void Game::createBricks() {
 			bricks.push_back(brick);
 		}
 	}
+}
+
+void Game::createWalls() {
+	// Instantiate and place walls
+	// Upper wall
+	upperWalls.push_back(new HorizontalWall());
+	upperWalls.push_back(new HorizontalWall());
+	upperWalls.push_back(new HorizontalWall());
+
+	for (int upperWallIndex = 0; upperWallIndex < upperWalls.size(); upperWallIndex++) {
+		HorizontalWall* upperWall = upperWalls.at(upperWallIndex);
+
+		float upperWallOffset = upperWallIndex - floor((upperWalls.size() / 2));
+		float upperWallX = (upperWallOffset * UPPER_WALL_WIDTH);
+
+		upperWall->translate(glm::vec3(upperWallX, 19.0f, 0.0f));
+	}
+
+	// Side walls
+	float wallDistanceFromCenter = (LETTER_WIDTH + LETTER_SPACING * 2) * TEXT.size() / 2 + 1.0f;
+	float leftWallX = -1 * wallDistanceFromCenter;
+	VerticalWall* leftWall = new VerticalWall();
+	leftWall->translate(glm::vec3(leftWallX, 10.0f, 0.0f));
+	sideWalls.push_back(leftWall);
+
+	float rightWallX = wallDistanceFromCenter;
+	VerticalWall* rightWall = new VerticalWall();
+	rightWall->translate(glm::vec3(rightWallX, 10.0f, 0.0f));
+	sideWalls.push_back(rightWall);
+
 }
 
 void Game::draw() {
