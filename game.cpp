@@ -27,20 +27,20 @@ using std::string;
 static float padX = 0;
 static float cameraRotation = 0;
 
-const string A = "1111100111111001";
-const string R = "1111100111101001";
-const string K = "1001101011001010";
-const string N = "1001110110111001";
-const string O = "1111100110011111";
-const string I = "0110011001100110";
-const string D = "1110100110011110";
+const string A = "1111100110011111100110011001";
+const string R = "1110100110011110100110011001";
+const string K = "1001101010101100110010101001";
+const string N = "1001100110011101101110011001";
+const string O = "1111100110011001100110011111";
+const string I = "0110011001100110011001100110";
+const string D = "1110100110011001100110011110";
 
 static const string TEXT_ARR[] = {A, R, K, A, N, O, I, D};
 std::vector<string> TEXT(TEXT_ARR, TEXT_ARR + sizeof(TEXT_ARR) / sizeof(TEXT_ARR[0]) );
 
 const float BRICK_SIZE = 2.0f;
 const int LETTER_WIDTH_BLOCKS = 4;
-const int LETTER_HEIGHT_BLOCKS = 4;
+const int LETTER_HEIGHT_BLOCKS = 7;
 const float LETTER_WIDTH = BRICK_SIZE * LETTER_WIDTH_BLOCKS;
 const float LETTER_HEIGHT = BRICK_SIZE * LETTER_HEIGHT_BLOCKS;
 const float LETTER_SPACING = 1.0f;
@@ -305,14 +305,12 @@ void Game::createBricks() {
 	for (int letterIndex = 0; letterIndex < TEXT.size(); letterIndex++) {
 		string letter = TEXT.at(letterIndex);
 
-		float letterOffset = (float) letterIndex - (TEXT.size() / 2.0f) + 0.5f;
+		float letterOffset = (float) letterIndex - floor(TEXT.size() / 2.0f) + 0.5f;
 		glm::vec3 letterTranslationVector = glm::vec3((letterOffset * (LETTER_WIDTH + LETTER_SPACING * 2)), 10.0f, 0.0f);
 
-		std::cout << glm::to_string(letterTranslationVector) << std::endl;
-
 		for (int brickIndex = 0; brickIndex < letter.length(); brickIndex++) {
-			int positionX = brickIndex % LETTER_WIDTH_BLOCKS;
-			int positionY = brickIndex / LETTER_HEIGHT_BLOCKS;
+			float positionX = brickIndex % LETTER_WIDTH_BLOCKS;
+			float positionY = floor(brickIndex / LETTER_WIDTH_BLOCKS);
 			bool isBrickPresent = letter[brickIndex] == '1';
 
 			if (!isBrickPresent) {
@@ -326,7 +324,7 @@ void Game::createBricks() {
 
 			// what is -1.5f?
 			float xTranslation = -1.5f * BRICK_SIZE +  positionX * BRICK_SIZE; 
-			float yTranslation = 1.5f * BRICK_SIZE - positionY * BRICK_SIZE;
+			float yTranslation = 3.0f * BRICK_SIZE - positionY * BRICK_SIZE;
 			glm::vec3 brickTranslationVector = glm::vec3(xTranslation, yTranslation, 0.0f);
 			brickMatrix = glm::translate(brickMatrix, brickTranslationVector);
 
