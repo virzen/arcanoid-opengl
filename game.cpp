@@ -26,6 +26,7 @@ using std::string;
 
 static float padX = 0;
 static float cameraRotation = 0;
+static bool hasGameBeenStarted = false;
 
 const string A = "1111100110011111100110011001";
 const string R = "1110100110011110100110011001";
@@ -127,6 +128,8 @@ void Game::init() {
 }
 
 void Game::startNewGame() {
+	hasGameBeenStarted = false;
+
 	//Create models
 	paddle = new Paddle();
 
@@ -145,8 +148,12 @@ void Game::run() {
 		//Reset game timer
 		resetTimer();
 
+		recalculateCamera();
+
 		//Recalculate game's state
-		recalculate();
+		if (hasGameBeenStarted) {
+			recalculateObjects();
+		}
 
 		//Draw all objects
 		draw();
@@ -191,6 +198,10 @@ void Game::handle_key(GLFWwindow* window, int key, int scancode, int action, int
 			padX = 0;
 		} else if (key == GLFW_KEY_A || key == GLFW_KEY_D) {
 			cameraRotation = 0;
+		}
+
+		if (key == GLFW_KEY_SPACE) {
+			hasGameBeenStarted = true;
 		}
 	}
 }
@@ -239,7 +250,7 @@ void Game::recalculatePaddle() {
 	paddle->setSpeedX(paddleSpeedX * speedSign); //Set the speed with the original sign
 }
 
-void Game::recalculate() {
+void Game::recalculateCamera() {
 	//Compute perspective matrix
 	perspectiveMatrix = glm::perspective(50 * PI / 180, windowAspect, 1.0f, 150.0f);
 
@@ -252,9 +263,10 @@ void Game::recalculate() {
 			glm::vec3(0.0f, 15.0f, 0.0f),
 			glm::vec3(0.0f, 1.0f, 0.0f)
 	);
+}
 
+void Game::recalculateObjects() {
 	recalculatePaddle();
-
 
 	// Finish game when ball below paddle
 	auto paddleBoundingBox = paddle->getBoundingBox();

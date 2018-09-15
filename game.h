@@ -149,6 +149,8 @@ private:
 	 */
 	void drawModel(Model* model);
 
+	void recalculateCamera();
+
 	void recalculatePaddle();
 
 	void createBricks();
@@ -158,7 +160,7 @@ private:
 	/**
 	 * Recalculates positions of game's models.
 	 */
-	void recalculate();
+	void recalculateObjects();
 };
 
 
