@@ -50,6 +50,8 @@ const float TEXT_WIDTH = TEXT.size() * (LETTER_WIDTH + LETTER_SPACING * 2);
 const float SIDE_WALL_DISTANCE_FROM_CENTER = TEXT_WIDTH / 2 + 1.0f;
 
 const float UPPER_WALL_WIDTH = 20.0f;
+const float UPPER_WALLS_NUMBER = ceil(TEXT_WIDTH / UPPER_WALL_WIDTH);
+
 const float SIDE_WALL_WIDTH = 2.0f;
 
 Game* Game::instance = nullptr;
@@ -339,14 +341,14 @@ void Game::createBricks() {
 void Game::createWalls() {
 	// Instantiate and place walls
 	// Upper wall
-	upperWalls.push_back(new HorizontalWall());
-	upperWalls.push_back(new HorizontalWall());
-	upperWalls.push_back(new HorizontalWall());
+	for (int i = 0; i < UPPER_WALLS_NUMBER; i++) {
+		upperWalls.push_back(new HorizontalWall());
+	}
 
 	for (int upperWallIndex = 0; upperWallIndex < upperWalls.size(); upperWallIndex++) {
 		HorizontalWall* upperWall = upperWalls.at(upperWallIndex);
 
-		float upperWallOffset = upperWallIndex - floor((upperWalls.size() / 2));
+		float upperWallOffset = (float) upperWallIndex - floor(upperWalls.size() / 2.0f) + 0.5f;
 		float upperWallX = (upperWallOffset * UPPER_WALL_WIDTH);
 
 		upperWall->translate(glm::vec3(upperWallX, 19.0f, 0.0f));
