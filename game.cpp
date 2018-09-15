@@ -51,6 +51,7 @@ const float UPPER_WALL_WIDTH = 20.0f;
 const float UPPER_WALLS_NUMBER = ceil(TEXT_WIDTH / UPPER_WALL_WIDTH);
 
 const float SIDE_WALL_WIDTH = 2.0f;
+const float SIDE_WALL_HEIGHT = 20.0f;
 const float SIDE_WALL_DISTANCE_FROM_CENTER = (UPPER_WALLS_NUMBER * UPPER_WALL_WIDTH / 2) + (SIDE_WALL_WIDTH / 2);
 
 Game* Game::instance = nullptr;
@@ -306,7 +307,7 @@ void Game::createBricks() {
 		string letter = TEXT.at(letterIndex);
 
 		float letterOffset = (float) letterIndex - floor(TEXT.size() / 2.0f) + 0.5f;
-		glm::vec3 letterTranslationVector = glm::vec3((letterOffset * (LETTER_WIDTH + LETTER_SPACING * 2)), 10.0f, 0.0f);
+		glm::vec3 letterTranslationVector = glm::vec3((letterOffset * (LETTER_WIDTH + LETTER_SPACING * 2)), 20.0f, 0.0f);
 
 		for (int brickIndex = 0; brickIndex < letter.length(); brickIndex++) {
 			float positionX = brickIndex % LETTER_WIDTH_BLOCKS;
@@ -348,20 +349,39 @@ void Game::createWalls() {
 		float upperWallOffset = (float) upperWallIndex - floor(upperWalls.size() / 2.0f) + 0.5f;
 		float upperWallX = (upperWallOffset * UPPER_WALL_WIDTH);
 
-		upperWall->translate(glm::vec3(upperWallX, 19.0f, 0.0f));
+		upperWall->translate(glm::vec3(upperWallX, 39.0f, 0.0f));
 	}
 
 	// Side walls
-	float leftWallX = -1 * SIDE_WALL_DISTANCE_FROM_CENTER;
-	VerticalWall* leftWall = new VerticalWall();
-	leftWall->translate(glm::vec3(leftWallX, 10.0f, 0.0f));
-	sideWalls.push_back(leftWall);
+	std::vector<VerticalWall*> leftWalls;
+	leftWalls.push_back(new VerticalWall());
+	leftWalls.push_back(new VerticalWall());
 
-	float rightWallX = SIDE_WALL_DISTANCE_FROM_CENTER;
-	VerticalWall* rightWall = new VerticalWall();
-	rightWall->translate(glm::vec3(rightWallX, 10.0f, 0.0f));
-	sideWalls.push_back(rightWall);
+	for (int leftWallIndex = 0; leftWallIndex < leftWalls.size(); leftWallIndex++) {
+		VerticalWall* leftWall = leftWalls.at(leftWallIndex);
 
+		float leftWallX = -1 * SIDE_WALL_DISTANCE_FROM_CENTER;
+		float leftWallY = leftWallIndex * SIDE_WALL_HEIGHT + 10.0f;
+
+		leftWall->translate(glm::vec3(leftWallX, leftWallY, 0.0f));
+
+		sideWalls.push_back(leftWall);
+	}
+
+	std::vector<VerticalWall*> rightWalls;
+	rightWalls.push_back(new VerticalWall());
+	rightWalls.push_back(new VerticalWall());
+
+	for (int rightWallIndex = 0; rightWallIndex < rightWalls.size(); rightWallIndex++) {
+		VerticalWall* rightWall = rightWalls.at(rightWallIndex);
+
+		float rightWallX = SIDE_WALL_DISTANCE_FROM_CENTER;
+		float rightWallY = rightWallIndex * SIDE_WALL_HEIGHT + 10.0f;
+
+		rightWall->translate(glm::vec3(rightWallX, rightWallY, 0.0f));
+
+		sideWalls.push_back(rightWall);
+	}
 }
 
 void Game::draw() {
