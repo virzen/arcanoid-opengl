@@ -47,12 +47,11 @@ const float LETTER_SPACING = 1.0f;
 
 const float TEXT_WIDTH = TEXT.size() * (LETTER_WIDTH + LETTER_SPACING * 2);
 
-const float SIDE_WALL_DISTANCE_FROM_CENTER = TEXT_WIDTH / 2 + 1.0f;
-
 const float UPPER_WALL_WIDTH = 20.0f;
 const float UPPER_WALLS_NUMBER = ceil(TEXT_WIDTH / UPPER_WALL_WIDTH);
 
 const float SIDE_WALL_WIDTH = 2.0f;
+const float SIDE_WALL_DISTANCE_FROM_CENTER = (UPPER_WALLS_NUMBER * UPPER_WALL_WIDTH / 2) + (SIDE_WALL_WIDTH / 2);
 
 Game* Game::instance = nullptr;
 
