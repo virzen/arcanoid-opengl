@@ -121,7 +121,7 @@ void Game::init() {
 	glfwSetKeyCallback(glWindow, Game::handle_key);
 
 	//Set camera position
-	cameraPosition = glm::vec3(0.0f, 10.0f, 50.0f);
+	cameraPosition = glm::vec3(0.0f, 10.0f, 60.0f);
 
 	//Create models
 	paddle = new Paddle();
@@ -237,7 +237,7 @@ void Game::recalculatePaddle() {
 
 void Game::recalculate() {
 	//Compute perspective matrix
-	perspectiveMatrix = glm::perspective(50 * PI / 180, windowAspect, 1.0f, 70.0f);
+	perspectiveMatrix = glm::perspective(50 * PI / 180, windowAspect, 1.0f, 150.0f);
 
 	//Recalculate camera position
 	cameraPosition = glm::rotate(cameraPosition, (float) (CAMERA_SPEED * time * cameraRotation), glm::vec3(0.0f, 1.0f, 0.0f));
