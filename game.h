@@ -113,7 +113,7 @@ private:
 
 	std::vector<Brick*> bricks;
 
-	HorizontalWall* upperWall;
+	std::vector<HorizontalWall*> upperWalls;
 	std::vector<VerticalWall*> sideWalls;
 
 	/**

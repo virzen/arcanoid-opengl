@@ -45,6 +45,8 @@ const float LETTER_WIDTH = BRICK_SIZE * LETTER_WIDTH_BLOCKS;
 const float LETTER_HEIGHT = BRICK_SIZE * LETTER_HEIGHT_BLOCKS;
 const float LETTER_SPACING = 1.0f;
 
+const float UPPER_WALL_WIDTH = 20.0f;
+
 Game* Game::instance = nullptr;
 
 Game* Game::get() {
@@ -125,16 +127,29 @@ void Game::init() {
 
 	// Instantiate and place walls
 	// Upper wall
-	upperWall = new HorizontalWall();
-	upperWall->translate(glm::vec3(0.0f, 19.0f, 0.0f));
+	upperWalls.push_back(new HorizontalWall());
+	upperWalls.push_back(new HorizontalWall());
+	upperWalls.push_back(new HorizontalWall());
+
+	for (int upperWallIndex = 0; upperWallIndex < upperWalls.size(); upperWallIndex++) {
+		HorizontalWall* upperWall = upperWalls.at(upperWallIndex);
+
+		float upperWallOffset = upperWallIndex - floor((upperWalls.size() / 2));
+		float upperWallX = (upperWallOffset * UPPER_WALL_WIDTH);
+
+		upperWall->translate(glm::vec3(upperWallX, 19.0f, 0.0f));
+	}
 
 	// Side walls
+	float wallDistanceFromCenter = (LETTER_WIDTH + LETTER_SPACING * 2) * TEXT.size() / 2 + 1.0f;
+	float leftWallX = -1 * wallDistanceFromCenter;
 	VerticalWall* leftWall = new VerticalWall();
-	leftWall->translate(glm::vec3(-11.0f, 10.0f, 0.0f));
+	leftWall->translate(glm::vec3(leftWallX, 10.0f, 0.0f));
 	sideWalls.push_back(leftWall);
 
+	float rightWallX = wallDistanceFromCenter;
 	VerticalWall* rightWall = new VerticalWall();
-	rightWall->translate(glm::vec3(11.0f, 10.0f, 0.0f));
+	rightWall->translate(glm::vec3(rightWallX, 10.0f, 0.0f));
 	sideWalls.push_back(rightWall);
 }
 
@@ -270,9 +285,11 @@ void Game::recalculate() {
 	}
 
 	// walls
-	if (doesCollide(ball, upperWall)) {
-		printf("Collides with upper wall!\n");
-		hitObjects.push_back(upperWall);
+	for (HorizontalWall* upperWall : upperWalls) {
+		if (doesCollide(ball, upperWall)) {
+			printf("Collides with upper wall!\n");
+			hitObjects.push_back(upperWall);
+		}
 	}
 	for (VerticalWall* sideWall : sideWalls) {
 		if (doesCollide(ball, sideWall)) {
@@ -342,11 +359,15 @@ void Game::draw() {
 
 	//Draw paddle
 	drawModel(paddle);
+
 	drawModel(ball);
 	for (Brick* brick : bricks) {
 		drawModel(brick);
 	}
-	drawModel(upperWall);
+
+	for (HorizontalWall* upperWall : upperWalls) {
+		drawModel(upperWall);
+	}
 	for (VerticalWall* sideWall : sideWalls) {
 		drawModel(sideWall);
 	}
