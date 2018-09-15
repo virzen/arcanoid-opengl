@@ -45,7 +45,12 @@ const float LETTER_WIDTH = BRICK_SIZE * LETTER_WIDTH_BLOCKS;
 const float LETTER_HEIGHT = BRICK_SIZE * LETTER_HEIGHT_BLOCKS;
 const float LETTER_SPACING = 1.0f;
 
+const float TEXT_WIDTH = TEXT.size() * (LETTER_WIDTH + LETTER_SPACING * 2);
+
+const float SIDE_WALL_DISTANCE_FROM_CENTER = TEXT_WIDTH / 2 + 1.0f;
+
 const float UPPER_WALL_WIDTH = 20.0f;
+const float SIDE_WALL_WIDTH = 2.0f;
 
 Game* Game::instance = nullptr;
 
@@ -206,13 +211,16 @@ void Game::recalculatePaddle() {
 	paddle->translate(glm::vec3(paddle->getSpeedX() * time, 0.0f, 0.0f));
 
 	//Keep paddle between side walls
+	float distanceToLeftSideWall = -1 * (SIDE_WALL_DISTANCE_FROM_CENTER - SIDE_WALL_WIDTH / 2);
+	float distanceToRightSideWall = SIDE_WALL_DISTANCE_FROM_CENTER - SIDE_WALL_WIDTH / 2;
 	auto paddleBoundingBox = paddle->getBoundingBox();
-	if (paddleBoundingBox->getMaxX() > 10.0f) {
+
+	if (paddleBoundingBox->getMaxX() > distanceToRightSideWall) {
 		paddle->setSpeedX(0.0f);
-		paddle->translate(glm::vec3(10.0f - paddleBoundingBox->getMaxX(), 0.0f, 0.0f));
-	} else if (paddleBoundingBox->getMinX() < -10.0f) {
+		paddle->translate(glm::vec3(distanceToRightSideWall - paddleBoundingBox->getMaxX(), 0.0f, 0.0f));
+	} else if (paddleBoundingBox->getMinX() < distanceToLeftSideWall) {
 		paddle->setSpeedX(0.0f);
-		paddle->translate(glm::vec3(-10.0f - paddleBoundingBox->getMinX(), 0.0f, 0.0f));
+		paddle->translate(glm::vec3(distanceToLeftSideWall - paddleBoundingBox->getMinX(), 0.0f, 0.0f));
 	}
 
 	//Apply regression to paddle's speed
@@ -345,13 +353,12 @@ void Game::createWalls() {
 	}
 
 	// Side walls
-	float wallDistanceFromCenter = (LETTER_WIDTH + LETTER_SPACING * 2) * TEXT.size() / 2 + 1.0f;
-	float leftWallX = -1 * wallDistanceFromCenter;
+	float leftWallX = -1 * SIDE_WALL_DISTANCE_FROM_CENTER;
 	VerticalWall* leftWall = new VerticalWall();
 	leftWall->translate(glm::vec3(leftWallX, 10.0f, 0.0f));
 	sideWalls.push_back(leftWall);
 
-	float rightWallX = wallDistanceFromCenter;
+	float rightWallX = SIDE_WALL_DISTANCE_FROM_CENTER;
 	VerticalWall* rightWall = new VerticalWall();
 	rightWall->translate(glm::vec3(rightWallX, 10.0f, 0.0f));
 	sideWalls.push_back(rightWall);
