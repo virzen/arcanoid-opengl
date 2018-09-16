@@ -17,7 +17,7 @@ Shader* Shaders::colorShader() {
 
 Shader* Shaders::ballShader() {
 	if (ballShaderInstance == nullptr) {
-		ballShaderInstance = new TextureShader("textures/bricks/bricks_diffuse.png");
+		ballShaderInstance = new TextureShader("textures/brick.png");
 	}
 
 	return ballShaderInstance;
