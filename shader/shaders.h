@@ -11,11 +11,11 @@ class Shaders {
 public:
 	static Shader* colorShader();
 
-	static Shader* ballShader();
+	static Shader* brickShader();
 
 private:
 	static Shader* colorShaderInstance;
-	static Shader* ballShaderInstance;
+	static Shader* brickShaderInstance;
 };
 
 

@@ -5,7 +5,7 @@
 #include "texture/texture-shader.h"
 
 Shader* Shaders::colorShaderInstance = nullptr;
-Shader* Shaders::ballShaderInstance = nullptr;
+Shader* Shaders::brickShaderInstance = nullptr;
 
 Shader* Shaders::colorShader() {
 	if (colorShaderInstance == nullptr) {
@@ -15,10 +15,10 @@ Shader* Shaders::colorShader() {
 	return colorShaderInstance;
 }
 
-Shader* Shaders::ballShader() {
-	if (ballShaderInstance == nullptr) {
-		ballShaderInstance = new TextureShader("textures/brick.png");
+Shader* Shaders::brickShader() {
+	if (brickShaderInstance == nullptr) {
+		brickShaderInstance = new TextureShader("textures/brick.png");
 	}
 
-	return ballShaderInstance;
+	return brickShaderInstance;
 }
