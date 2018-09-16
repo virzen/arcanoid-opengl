@@ -113,7 +113,7 @@ private:
 
 	std::vector<Brick*> bricks;
 
-	HorizontalWall* upperWall;
+	std::vector<HorizontalWall*> upperWalls;
 	std::vector<VerticalWall*> sideWalls;
 
 	/**
@@ -147,6 +147,10 @@ private:
 	void drawModel(Model* model);
 
 	void recalculatePaddle();
+
+	void createBricks();
+
+	void createWalls();
 
 	/**
 	 * Recalculates positions of game's models.
