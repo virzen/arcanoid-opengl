@@ -17,8 +17,9 @@ out vec4 normalVector;
 out vec4 viewerVector;
 
 void main(void) {
-    vec4 lightPosition1 = vec4(0, 10, 6, 1); // Light position in world space
-    vec4 lightPosition2 = vec4(0, 10, 500, 1); // Light position in world space
+    // Light positions in world space
+    vec4 lightPosition1 = vec4(0, 20, 25, 1);
+    vec4 lightPosition2 = vec4(0, 20, 500, 1);
 
    	gl_Position = perspectiveMatrix * viewMatrix * modelMatrix * vertexCoordinates;
     outputColor = vertexColor;
