@@ -139,12 +139,17 @@ private:
 	 */
 	void draw();
 
+
+	void startNewGame();
+
 	/**
 	 * Draws given model on the screen.
 	 *
 	 * @param model A model to draw.
 	 */
 	void drawModel(Model* model);
+
+	void recalculateCamera();
 
 	void recalculatePaddle();
 
@@ -155,7 +160,7 @@ private:
 	/**
 	 * Recalculates positions of game's models.
 	 */
-	void recalculate();
+	void recalculateObjects();
 };
 
 
