@@ -76,6 +76,8 @@ public:
 
 	void setShader(Shader* shader);
 
+	float getColorModifier();
+
 	int getHitpoints();
 
 	void addHitpoint();

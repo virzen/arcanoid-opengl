@@ -34,6 +34,7 @@ void TextureShader::draw(Model* model, glm::mat4 perspectiveMatrix, glm::mat4 vi
 	glUniformMatrix4fv(getUniformLocation("perspectiveMatrix"), 1, GL_FALSE, glm::value_ptr(perspectiveMatrix));
 	glUniformMatrix4fv(getUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 	glUniformMatrix4fv(getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(model->getMatrix()));
+	glUniform1f(getUniformLocation("colorModifier"), model->getColorModifier());
 	glUniform1i(getUniformLocation("textureMap"), 0);
 
 	//Enable attributes
