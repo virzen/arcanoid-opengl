@@ -7,3 +7,11 @@ Brick::Brick() {
 	loadModel("./models/brick/brick.obj");
 	setShader(Shaders::brickShader());
 }
+
+int Brick::getHitpoints() {
+	return hitpoints;
+}
+
+void Brick::addHitpoint() {
+	hitpoints += 1;
+}

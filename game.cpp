@@ -55,6 +55,8 @@ const float SIDE_WALL_WIDTH = 2.0f;
 const float SIDE_WALL_HEIGHT = 20.0f;
 const float SIDE_WALL_DISTANCE_FROM_CENTER = (UPPER_WALLS_NUMBER * UPPER_WALL_WIDTH / 2) + (SIDE_WALL_WIDTH / 2);
 
+const int BRICK_MAX_HITPOINTS = 2;
+
 Game* Game::instance = nullptr;
 
 Game* Game::get() {
@@ -282,7 +284,12 @@ void Game::recalculateObjects() {
 			printf("\nCollides with brick!\n");
 			hitObjects.push_back(brick);
 
-			destroyedBricks.push_back(brick);
+			if (brick->getHitpoints() >= BRICK_MAX_HITPOINTS) {
+				destroyedBricks.push_back(brick);
+			}
+			else {
+				brick->addHitpoint();
+			}
 		}
 	}
 	if (doesCollide(ball, paddle)) {
@@ -317,6 +324,7 @@ void Game::recalculateObjects() {
 			auto distance = std::distance(vectorBeginning, brickPosition);
 			bricks.erase(vectorBeginning + distance);
 			printf("Destroyed brick with index: '%td'!\n", distance);
+			printf("Brick had %d hitpoints when destroyed.\n", destroyedBrick->getHitpoints());
 		}
 	}
 
@@ -347,7 +355,6 @@ void Game::createBricks() {
 
 			brickMatrix = glm::translate(brickMatrix, letterTranslationVector);
 
-			// what is -1.5f?
 			float xTranslation = -1.5f * BRICK_SIZE +  positionX * BRICK_SIZE; 
 			float yTranslation = 3.0f * BRICK_SIZE - positionY * BRICK_SIZE;
 			glm::vec3 brickTranslationVector = glm::vec3(xTranslation, yTranslation, 0.0f);
