@@ -279,27 +279,27 @@ void Game::recalculateObjects() {
 
 	for (Brick* brick : bricks) {
 		if (doesCollide(ball, brick)) {
-			printf("Collides with brick!\n");
+			printf("\nCollides with brick!\n");
 			hitObjects.push_back(brick);
 
 			destroyedBricks.push_back(brick);
 		}
 	}
 	if (doesCollide(ball, paddle)) {
-		printf("Collides with paddle!\n");
+		printf("\nCollides with paddle!\n");
 		hitObjects.push_back(paddle);
 	}
 
 	// walls
 	for (HorizontalWall* upperWall : upperWalls) {
 		if (doesCollide(ball, upperWall)) {
-			printf("Collides with upper wall!\n");
+			printf("\nCollides with upper wall!\n");
 			hitObjects.push_back(upperWall);
 		}
 	}
 	for (VerticalWall* sideWall : sideWalls) {
 		if (doesCollide(ball, sideWall)) {
-			printf("Collides with side wall!\n");
+			printf("\nCollides with side wall!\n");
 			hitObjects.push_back(sideWall);
 		}
 	}
