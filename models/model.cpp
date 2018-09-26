@@ -172,3 +172,11 @@ Shader* Model::getShader() const {
 void Model::setShader(Shader* shader) {
 	Model::shader = shader;
 }
+
+int Model::getHitpoints() {
+	return hitpoints;
+}
+
+void Model::addHitpoint() {
+	hitpoints += 1;
+}
