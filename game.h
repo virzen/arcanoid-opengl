@@ -82,11 +82,6 @@ private:
 	 */
 	float windowAspect;
 	/**
-	 * Game's shader.
-	 * Currently only one shader is supported.
-	 */
-	Shader* shader;
-	/**
 	 * Time taken to draw last game's frame.
 	 */
 	double time;

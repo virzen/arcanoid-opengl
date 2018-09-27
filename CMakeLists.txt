@@ -67,7 +67,11 @@ SET(HEADER_FILES
 		models/vertical-wall/vertical-wall.h
 		models/brick/brick.h
 		models/ball/ball.h
-		shader/shader.h)
+		shader/shader.h
+		shader/shaders.h
+		shader/color/color-shader.h
+		shader/texture/texture-shader.h
+		shader/metal/metal-shader.h)
 
 SET(SOURCE_FILES
 		main_file.cpp
@@ -79,7 +83,11 @@ SET(SOURCE_FILES
 		models/vertical-wall/vertical-wall.cpp
 		models/brick/brick.cpp
 		models/ball/ball.cpp
-		shader/shader.cpp utils/obj_loader.cpp utils/obj_loader.h utils/does_collide.h utils/does_collide.cpp utils/bounce.cpp utils/bounce.h models/boundingBox/boundingBox.h models/boundingBox/boundingBox.cpp)
+		shader/shader.cpp utils/obj_loader.cpp utils/obj_loader.h utils/does_collide.h utils/does_collide.cpp utils/bounce.cpp utils/bounce.h models/boundingBox/boundingBox.h models/boundingBox/boundingBox.cpp
+		shader/shaders.cpp
+		shader/color/color-shader.cpp
+		shader/texture/texture-shader.cpp
+		shader/metal/metal-shader.cpp)
 
 ADD_EXECUTABLE(opengl-arcanoid
 		${HEADER_FILES}

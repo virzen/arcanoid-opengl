@@ -48,6 +48,53 @@ Shader::Shader(const char* vertexShaderFile, const char* geometryShaderFile, con
 	printf("Shader program created\n");
 }
 
+GLuint Shader::loadShader(GLenum shaderType, const char* fileName) {
+	//Generate shader handle
+	GLuint shader = glCreateShader(shaderType);
+	//Read shader source code
+	const GLchar* shaderSource = readFile(fileName);
+	//Link shader source with the handle
+	glShaderSource(shader, 1, &shaderSource, nullptr);
+	//Compile shader source code
+	glCompileShader(shader);
+	//Remove shader source code from memory
+	delete[]shaderSource;
+
+	//Get error log and display it
+	int infologLength = 0;
+	int charsWritten = 0;
+	char* infoLog;
+
+	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLength);
+
+	if (infologLength > 1) {
+		infoLog = new char[infologLength];
+		glGetShaderInfoLog(shader, infologLength, &charsWritten, infoLog);
+		printf("%s\n", infoLog);
+		delete[]infoLog;
+	}
+
+	//Return generated shader's handles
+	return shader;
+}
+
+char* Shader::readFile(const char* fileName) {
+	int filesize;
+	FILE* plik;
+	char* result;
+
+	plik = fopen(fileName, "rb");
+	fseek(plik, 0, SEEK_END);
+	filesize = ftell(plik);
+	fseek(plik, 0, SEEK_SET);
+	result = new char[filesize + 1];
+	fread(result, 1, filesize, plik);
+	result[filesize] = 0;
+	fclose(plik);
+
+	return result;
+}
+
 void Shader::use() {
 	glUseProgram(shaderProgram);
 }
@@ -77,51 +124,4 @@ Shader::~Shader() {
 
 	//Delete shader program
 	glDeleteProgram(shaderProgram);
-}
-
-char* Shader::readFile(const char* fileName) {
-	int filesize;
-	FILE* plik;
-	char* result;
-
-	plik = fopen(fileName, "rb");
-	fseek(plik, 0, SEEK_END);
-	filesize = ftell(plik);
-	fseek(plik, 0, SEEK_SET);
-	result = new char[filesize + 1];
-	fread(result, 1, filesize, plik);
-	result[filesize] = 0;
-	fclose(plik);
-
-	return result;
-}
-
-GLuint Shader::loadShader(GLenum shaderType, const char* fileName) {
-	//Generate shader handle
-	GLuint shader = glCreateShader(shaderType);
-	//Read shader source code
-	const GLchar* shaderSource = readFile(fileName);
-	//Link shader source with the handle
-	glShaderSource(shader, 1, &shaderSource, nullptr);
-	//Compile shader source code
-	glCompileShader(shader);
-	//Remove shader source code from memory
-	delete[]shaderSource;
-
-	//Get error log and display it
-	int infologLength = 0;
-	int charsWritten = 0;
-	char* infoLog;
-
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infologLength);
-
-	if (infologLength > 1) {
-		infoLog = new char[infologLength];
-		glGetShaderInfoLog(shader, infologLength, &charsWritten, infoLog);
-		printf("%s\n", infoLog);
-		delete[]infoLog;
-	}
-
-	//Return generated shader's handles
-	return shader;
 }

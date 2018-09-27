@@ -104,11 +104,6 @@ void Game::init() {
 		Errors::handle_fatal("Could not initialize GLEW library!\n");
 	}
 
-	//Compile and instantiate the shader
-	shader = new Shader("shader/vshader.vert", nullptr, "shader/fshader.frag");
-	//Use loaded shader
-	shader->use();
-
 	//Clear screen with black
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -441,33 +436,11 @@ void Game::draw() {
 }
 
 void Game::drawModel(Model* model) {
-	//Pass all matrices to the shader
-	glUniformMatrix4fv(shader->getUniformLocation("perspectiveMatrix"), 1, GL_FALSE, glm::value_ptr(perspectiveMatrix));
-	glUniformMatrix4fv(shader->getUniformLocation("viewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-	glUniformMatrix4fv(shader->getUniformLocation("modelMatrix"), 1, GL_FALSE, glm::value_ptr(model->getMatrix()));
-
-	//Enable attributes
-	glEnableVertexAttribArray(shader->getAttribLocation("vertexCoordinates"));
-	glEnableVertexAttribArray(shader->getAttribLocation("vertexColor"));
-	glEnableVertexAttribArray(shader->getAttribLocation("vertexNormal"));
-
-	//Pass attributes to the shader
-	glVertexAttribPointer(shader->getAttribLocation("vertexCoordinates"), 4, GL_FLOAT, GL_FALSE, 0, model->getVertices());
-	glVertexAttribPointer(shader->getAttribLocation("vertexColor"), 4, GL_FLOAT, GL_FALSE, 0, model->getColors());
-	glVertexAttribPointer(shader->getAttribLocation("vertexNormal"), 4, GL_FLOAT, GL_FALSE, 0, model->getNormals());
-
-	//Draw the object
-	glDrawArrays(GL_TRIANGLES, 0, model->getVertexCount());
-
-	//Clean up
-	glDisableVertexAttribArray(shader->getAttribLocation("vertexCoordinates"));
-	glDisableVertexAttribArray(shader->getAttribLocation("vertexColor"));
-	glDisableVertexAttribArray(shader->getAttribLocation("vertexNormal"));
+	auto shader = model->getShader();
+	shader->draw(model, perspectiveMatrix, viewMatrix);
 }
 
 Game::~Game() {
-	//Release the shader
-	delete shader;
 
 	//Delete OpenGL context and the windows
 	glfwDestroyWindow(glWindow);

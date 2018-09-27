@@ -2,7 +2,9 @@
 
 #include <cstdio>
 #include "paddle.h"
+#include "../../shader/shaders.h"
 
 Paddle::Paddle() {
 	loadModel("./models/paddle/paddle.obj");
+	setShader(Shaders::paddleShader());
 }
