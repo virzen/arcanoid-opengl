@@ -15,10 +15,13 @@ public:
 
 	static Shader* ballShader();
 
+	static Shader* wallShader();
+
 private:
 	static Shader* colorShaderInstance;
 	static Shader* brickShaderInstance;
 	static Shader* ballShaderInstance;
+	static Shader* wallShaderInstance;
 };
 
 

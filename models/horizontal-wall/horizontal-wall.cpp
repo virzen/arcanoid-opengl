@@ -5,5 +5,5 @@
 
 HorizontalWall::HorizontalWall() {
 	loadModel("./models/horizontal-wall/horizontal-wall.obj");
-	setShader(Shaders::colorShader());
+	setShader(Shaders::wallShader());
 }

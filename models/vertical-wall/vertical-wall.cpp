@@ -5,5 +5,5 @@
 
 VerticalWall::VerticalWall() {
 	loadModel("./models/vertical-wall/vertical-wall.obj");
-	setShader(Shaders::colorShader());
+	setShader(Shaders::wallShader());
 }
