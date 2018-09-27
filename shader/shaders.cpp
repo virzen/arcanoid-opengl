@@ -6,6 +6,7 @@
 
 Shader* Shaders::colorShaderInstance = nullptr;
 Shader* Shaders::brickShaderInstance = nullptr;
+Shader* Shaders::ballShaderInstance = nullptr;
 
 Shader* Shaders::colorShader() {
 	if (colorShaderInstance == nullptr) {
@@ -21,4 +22,12 @@ Shader* Shaders::brickShader() {
 	}
 
 	return brickShaderInstance;
+}
+
+Shader* Shaders::ballShader() {
+	if (ballShaderInstance == nullptr) {
+		ballShaderInstance = new TextureShader("textures/ball.png");
+	}
+
+	return ballShaderInstance;
 }

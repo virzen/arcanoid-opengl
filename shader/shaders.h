@@ -13,9 +13,12 @@ public:
 
 	static Shader* brickShader();
 
+	static Shader* ballShader();
+
 private:
 	static Shader* colorShaderInstance;
 	static Shader* brickShaderInstance;
+	static Shader* ballShaderInstance;
 };
 
 
