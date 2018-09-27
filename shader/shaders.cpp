@@ -3,6 +3,7 @@
 #include "shaders.h"
 #include "color/color-shader.h"
 #include "texture/texture-shader.h"
+#include "metal/metal-shader.h"
 
 Shader* Shaders::colorShaderInstance = nullptr;
 Shader* Shaders::brickShaderInstance = nullptr;
@@ -35,7 +36,7 @@ Shader* Shaders::ballShader() {
 
 Shader* Shaders::wallShader() {
 	if (wallShaderInstance == nullptr) {
-		wallShaderInstance = new TextureShader("textures/wall.png");
+		wallShaderInstance = new MetalShader("textures/wall.png");
 	}
 
 	return wallShaderInstance;
