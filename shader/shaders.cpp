@@ -9,6 +9,7 @@ Shader* Shaders::colorShaderInstance = nullptr;
 Shader* Shaders::brickShaderInstance = nullptr;
 Shader* Shaders::ballShaderInstance = nullptr;
 Shader* Shaders::wallShaderInstance = nullptr;
+Shader* Shaders::paddleShaderInstance = nullptr;
 
 Shader* Shaders::colorShader() {
 	if (colorShaderInstance == nullptr) {
@@ -40,4 +41,12 @@ Shader* Shaders::wallShader() {
 	}
 
 	return wallShaderInstance;
+}
+
+Shader* Shaders::paddleShader() {
+	if (paddleShaderInstance == nullptr) {
+		paddleShaderInstance = new TextureShader("textures/paddle.png");
+	}
+
+	return paddleShaderInstance;
 }

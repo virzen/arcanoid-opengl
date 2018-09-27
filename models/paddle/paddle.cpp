@@ -6,5 +6,5 @@
 
 Paddle::Paddle() {
 	loadModel("./models/paddle/paddle.obj");
-	setShader(Shaders::colorShader());
+	setShader(Shaders::paddleShader());
 }
