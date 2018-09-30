@@ -8,7 +8,6 @@
  * This is a class representing an Arkanoid brick.
  */
 class Brick : public Model {
-
 public:
 	Brick();
 };

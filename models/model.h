@@ -76,6 +76,12 @@ public:
 
 	void setShader(Shader* shader);
 
+	float getColorModifier();
+
+	int getHitpoints();
+
+	void addHitpoint();
+
 private:
 	/**
 	 * A number of vertices shared among all instances of this class.
@@ -109,6 +115,8 @@ private:
 	double speedY = 0.0f;
 
 	Shader* shader;
+
+	int hitpoints = 0;
 };
 
 

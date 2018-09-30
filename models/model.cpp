@@ -8,6 +8,8 @@
 #include "../utils/obj_loader.h"
 #include "../constants.h"
 
+float const COLOR_MODIFIER_FACTOR = 0.2f;
+
 const glm::mat4 &Model::getMatrix() const {
 	return matrix;
 }
@@ -171,4 +173,16 @@ Shader* Model::getShader() const {
 
 void Model::setShader(Shader* shader) {
 	Model::shader = shader;
+}
+
+int Model::getHitpoints() {
+	return hitpoints;
+}
+
+void Model::addHitpoint() {
+	hitpoints += 1;
+}
+
+float Model::getColorModifier() {
+	return hitpoints * COLOR_MODIFIER_FACTOR;
 }

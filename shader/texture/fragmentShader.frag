@@ -2,6 +2,7 @@
 
 // Uniform variables
 uniform sampler2D textureMap;
+uniform float colorModifier;
 
 // Interpolated input variables
 in vec4 lightVectors[2];
@@ -22,6 +23,7 @@ vec4 colorForLight(vec4 lightVector) {
     vec4 ambientMaterialColor = outputColor;
     vec4 ambientLightColor = vec4(0.2, 0.2, 0.2, 1);
     vec4 ambientColor = ambientMaterialColor * ambientLightColor;
+    vec4 ambientColorModified = ambientColor - colorModifier;
 
     vec4 diffuseMaterialColor = outputColor;
     vec4 diffuseLightColor = vec4(1, 1, 1, 1);
@@ -34,7 +36,7 @@ vec4 colorForLight(vec4 lightVector) {
 	float reflectionFactor = pow(max(0, dot(reflectionVector, normalizedViewerVector)), lightFocus);
 	vec4 specularColor = specularMaterialColor * specularLightColor * reflectionFactor;
 
-    return ambientColor + diffuseColor + specularColor;
+    return ambientColorModified + diffuseColor + specularColor;
 }
 
 void main(void) {
