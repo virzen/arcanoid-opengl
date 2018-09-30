@@ -20,5 +20,5 @@ optirun ./main_file
 
 ---
 
-Developed on and for Debian 9.4.
+Developed on and for Debian 9.4. Might work on Windows, definitely doesn't work on macOS.
 
