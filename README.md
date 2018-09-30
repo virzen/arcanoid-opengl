@@ -1,10 +1,24 @@
 # OpenGL Arcanoid
 
-To run, use:
-```shell
-# Windows and Linux
-make
+![Preview](preview.png)
 
-# Mac
-make -f Makefile_mac
+## Compilation
+```shell
+make
 ```
+
+## Running
+```shell
+./main_file
+```
+
+## Running on a machine with Nvidia Optimus card
+First go through the pain of getting [bumblebee](https://bumblebee-project.org/) to work, then run
+```shell
+optirun ./main_file
+```
+
+---
+
+Tested on and for Debian 9.4.
+
