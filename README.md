@@ -20,5 +20,5 @@ optirun ./main_file
 
 ---
 
-Tested on and for Debian 9.4.
+Developed on and for Debian 9.4.
 
